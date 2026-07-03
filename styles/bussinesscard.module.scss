@@ -1,0 +1,57 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.bussinesscard {
+    background: url("/wave.png") center / cover;
+    box-shadow: rgba(0, 0, 0, 0.192) 0 4px 4px 3px;
+    margin: 10vh 0;
+}
+
+.bcrd {
+    padding: 10px;
+
+    header h1 {
+        @include fnt(var(--tc), 0.75rem, 600);
+        letter-spacing: 1.1px;
+        padding: 10px;
+    }
+
+    main {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 10px;
+    }
+}
+
+.info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+
+    section {
+        border-left: var(--gn) 1px solid;
+        padding-left: 10px;
+        text-align: start;
+    }
+
+    h2 a {
+        @include fnt(var(--tc), 0.7rem, 450);
+        overflow-wrap: anywhere;
+    }
+}
+
+.logo {
+    flex-shrink: 0;
+}
+
+@media (max-width: 520px) {
+    .bcrd main,
+    .info {
+        flex-direction: column;
+    }
+}

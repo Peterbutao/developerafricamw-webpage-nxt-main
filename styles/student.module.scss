@@ -1,0 +1,239 @@
+@mixin fnt($c, $s, $w) {
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 3rem 1rem 7rem;
+}
+
+.loading,
+.error {
+    padding: 4rem 1rem;
+    text-align: center;
+    background: var(--wt);
+    border-top: 3px solid var(--gn);
+
+    h1 {
+        @include fnt(var(--tc), 1.5rem, 600);
+        margin-bottom: 0.75rem;
+        line-height: 1.35;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.95rem, 400);
+        line-height: 1.8;
+        opacity: 0.78;
+    }
+}
+
+.profileCard {
+    background: var(--wt);
+    border: 1px solid rgba(17, 52, 17, 0.14);
+    border-top: 4px solid var(--gn);
+    border-radius: 8px;
+    overflow: hidden;
+    animation: slideIn 0.35s ease;
+}
+
+.profileHeader {
+    display: grid;
+    grid-template-columns: 112px 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 2rem;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.92)),
+        url('/world.png');
+    background-position: center;
+    background-size: cover;
+    border-bottom: 1px solid rgba(17, 52, 17, 0.14);
+}
+
+.avatar {
+    width: 112px;
+    height: 112px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--gn);
+    @include fnt(var(--wt), 2rem, 700);
+    letter-spacing: 0.04em;
+}
+
+.headerInfo {
+    min-width: 0;
+
+    h1 {
+        @include fnt(var(--tc), 1.8rem, 600);
+        margin: 0.35rem 0 0.5rem;
+        line-height: 1.25;
+    }
+}
+
+.eyebrow {
+    @include fnt(var(--gn), 0.72rem, 700);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.studentId {
+    @include fnt(var(--gn), 0.88rem, 700);
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.35rem 0.6rem;
+    background: rgba(17, 52, 17, 0.08);
+    border-radius: 4px;
+}
+
+.contactInfo {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+
+    p {
+        @include fnt(var(--tc), 0.9rem, 400);
+        margin: 0;
+        opacity: 0.84;
+        overflow-wrap: anywhere;
+    }
+}
+
+.coursesSection,
+.noteSection {
+    padding: 2rem;
+}
+
+.coursesSection {
+    h2 {
+        @include fnt(var(--tc), 1.15rem, 600);
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(17, 52, 17, 0.16);
+        line-height: 1.5;
+    }
+}
+
+.noCourses {
+    padding: 2rem 1rem;
+    text-align: center;
+    @include fnt(var(--tc), 0.92rem, 400);
+    line-height: 1.8;
+    opacity: 0.72;
+    background: rgba(17, 52, 17, 0.04);
+    border-radius: 8px;
+}
+
+.coursesList {
+    display: grid;
+    gap: 1rem;
+}
+
+.courseCard {
+    padding: 1.25rem;
+    background: #fbfcfb;
+    border: 1px solid rgba(17, 52, 17, 0.12);
+    border-left: 4px solid var(--gn);
+    border-radius: 8px;
+}
+
+.courseInfo {
+    h3 {
+        @include fnt(var(--tc), 1rem, 600);
+        margin-bottom: 0.5rem;
+        line-height: 1.45;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.88rem, 400);
+        margin-bottom: 0.45rem;
+        line-height: 1.75;
+        opacity: 0.82;
+    }
+}
+
+.completed,
+.inProgress {
+    display: inline-block;
+    margin-top: 0.35rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.completed {
+    @include fnt(#176b35, 0.78rem, 700);
+    background: rgba(23, 107, 53, 0.1);
+}
+
+.inProgress {
+    @include fnt(#7a5b00, 0.78rem, 700);
+    background: rgba(255, 193, 7, 0.16);
+}
+
+.noteSection {
+    background: rgba(17, 52, 17, 0.04);
+    border-top: 1px solid rgba(17, 52, 17, 0.12);
+
+    h2 {
+        @include fnt(var(--tc), 1rem, 600);
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.9rem, 400);
+        line-height: 1.8;
+        opacity: 0.78;
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        padding: 2rem 0.75rem 5rem;
+    }
+
+    .profileHeader {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1.5rem 1rem;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 88px;
+        height: 88px;
+        margin: 0 auto;
+        font-size: 1.5rem;
+    }
+
+    .headerInfo h1 {
+        font-size: 1.35rem;
+    }
+
+    .contactInfo {
+        justify-content: center;
+    }
+
+    .coursesSection,
+    .noteSection {
+        padding: 1.25rem;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

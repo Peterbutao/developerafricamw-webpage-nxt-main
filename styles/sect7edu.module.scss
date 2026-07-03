@@ -1,0 +1,113 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.edu{
+    background: var(--gn);
+    padding: 20px;
+    margin: 10vh 0;
+    
+    @media (max-width: 700px) {
+        margin: 5vh 0;
+        padding: 15px;
+    }
+    
+    @media (max-width: 600px) {
+        margin: 3vh 0;
+        padding: 10px;
+    }
+    .artedu{
+        max-width: var(--max-width);
+        margin: 0 auto;
+        header{
+            text-align: center;
+            h1{
+                @include fnt(var(--wt), 0.75rem, 500);
+                padding: 20px 0;
+                
+                @media (max-width: 600px) {
+                    font-size: 0.65rem;
+                    padding: 10px 0;
+                }
+            }
+            p{
+                @include fnt(var(--wt), 0.7rem, 500);
+                line-height:3;
+                
+                @media (max-width: 600px) {
+                    font-size: 0.65rem;
+                    line-height: 2;
+                }
+                span{
+                    strong{
+                        color: gold;
+                        padding:0  5px ;
+                    }
+                }
+            }
+        }
+        main{
+            .logos{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                flex-wrap: wrap;
+                
+                @media (max-width: 600px) {
+                    gap: 10px;
+                }
+                
+                svg{
+                    width: 40px;
+                    
+                    @media (max-width: 600px) {
+                        width: 30px;
+                    }
+                }
+            }
+            .text{
+                text-align: center;
+                border-top: gold solid 1px;
+                padding-top: 10px;
+                @include fnt(var(--wt), 0.7rem, 500);
+                
+                @media (max-width: 600px) {
+                    font-size: 0.65rem;
+                    padding-top: 5px;
+                }
+            }
+            .image{
+                margin: auto;
+                padding: 20px;
+                display: grid;
+                place-items: center;
+               
+            }
+        }
+        footer{
+            a{
+                text-align: center;
+                @include fnt(var(--tc), 0.7rem, 500);
+                padding: 15px;
+                display: block;
+                margin: 20px 0;
+                
+                @media (max-width: 600px) {
+                    font-size: 0.65rem;
+                    padding: 10px;
+                    margin: 10px 0;
+                }
+            }
+            a:nth-child(1){
+                background: gold;
+                border-radius: 5px;
+            }
+            a:nth-child(2){
+                color:white;
+            }
+        }
+    }
+}

@@ -1,0 +1,239 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.aboutPage,
+.coursesPage {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 3rem 1rem 8rem;
+}
+
+.eyebrow,
+.sectionHeader p {
+    @include fnt(var(--gn), 0.72rem, 700);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.intro {
+    padding: 2rem 0 3rem;
+    border-bottom: 1px solid rgba(17, 52, 17, 0.16);
+}
+
+.introGrid {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.95fr) minmax(320px, 1.05fr);
+    gap: 3rem;
+    align-items: start;
+    margin-top: 1rem;
+
+    h1 {
+        @include fnt(var(--tc), 2rem, 500);
+        line-height: 1.25;
+        letter-spacing: 0;
+        max-width: 540px;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.95rem, 400);
+        line-height: 1.85;
+        margin-bottom: 1rem;
+        opacity: 0.88;
+    }
+}
+
+.sectionHeader {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+
+    h2 {
+        @include fnt(var(--tc), 1.15rem, 600);
+        line-height: 1.55;
+        letter-spacing: 0;
+    }
+}
+
+.section {
+    padding: 2rem 0;
+}
+
+.coursesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.courseCard {
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    padding: 1.5rem;
+    background: var(--wt);
+    border: 1px solid rgba(17, 52, 17, 0.12);
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: rgba(0, 0, 0, 0.12) 0 6px 16px;
+    }
+}
+
+.courseContent {
+    flex: 1;
+
+    h3 {
+        @include fnt(var(--tc), 1.1rem, 600);
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .duration {
+        display: inline-block;
+        @include fnt(var(--gn), 0.75rem, 600);
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 0.25rem 0.5rem;
+        background: rgba(17, 52, 17, 0.08);
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.88rem, 450);
+        line-height: 1.75;
+        opacity: 0.88;
+    }
+}
+
+.registerButton {
+    display: inline-block;
+    margin-top: 1.25rem;
+    padding: 12px 20px;
+    background: var(--gn);
+    border-radius: 4px;
+    @include fnt(var(--wt), 0.78rem, 600);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    flex-shrink: 0;
+
+    &:hover {
+        background: #217821;
+    }
+}
+
+.empty {
+    text-align: center;
+    padding: 3rem 1rem;
+
+    p {
+        @include fnt(var(--tc), 0.95rem, 400);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        opacity: 0.85;
+    }
+
+    a {
+        display: inline-block;
+        padding: 12px 24px;
+        background: var(--gn);
+        border-radius: 4px;
+        @include fnt(var(--wt), 0.8rem, 500);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+
+        &:hover {
+            background: #217821;
+        }
+    }
+}
+
+.error {
+    padding: 1rem;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 5px;
+    color: #dc2626;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.25rem 0;
+    border-top: 2px solid var(--gn);
+
+    h2 {
+        @include fnt(var(--tc), 1rem, 600);
+        line-height: 1.5;
+    }
+
+    a {
+        display: inline-block;
+        flex-shrink: 0;
+        padding: 14px 24px;
+        background: var(--gn);
+        border-radius: 4px;
+        @include fnt(var(--wt), 0.78rem, 600);
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
+
+        &:hover {
+            background: #217821;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .coursesPage {
+        padding-top: 2rem;
+    }
+
+    .introGrid,
+    .sectionHeader {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .introGrid h1 {
+        font-size: 1.45rem;
+    }
+
+    .coursesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cta {
+        align-items: stretch;
+        flex-direction: column;
+
+        a {
+            text-align: center;
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 560px) {
+    .coursesPage {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .coursesGrid {
+        grid-template-columns: 1fr;
+    }
+}

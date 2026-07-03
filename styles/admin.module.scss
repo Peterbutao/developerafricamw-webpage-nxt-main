@@ -1,0 +1,719 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.adminContainer {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 4rem 1rem 8rem;
+    min-height: 100vh;
+}
+
+.adminHeader {
+    margin: 0 0 2rem;
+    padding: 20px 20px 20px 25px;
+    border-left: #114311 solid 2px;
+
+    h1 {
+        @include fnt(var(--tc), 1.1rem, 450);
+        line-height: 1.6;
+        letter-spacing: 1.1px;
+        margin-bottom: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.95rem, 400);
+        line-height: 1.8;
+        opacity: 0.9;
+    }
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    button {
+        padding: 15px;
+        border: var(--gn) 1px solid;
+        background: var(--wt);
+        border-radius: 5px;
+        cursor: pointer;
+        @include fnt(var(--tc), 0.75rem, 500);
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: rgba(17, 52, 17, 0.05);
+            color: var(--gn);
+        }
+    }
+}
+
+.activeTab {
+    background: var(--gn) !important;
+    color: var(--wt) !important;
+}
+
+.content {
+    width: 100%;
+}
+
+.tabContent {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.formCard,
+.listCard {
+    background: var(--wt);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+
+    h2 {
+        @include fnt(var(--tc), 1rem, 600);
+        letter-spacing: 1.09px;
+        padding: 0.5rem 0 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        text-transform: uppercase;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+        @include fnt(var(--tc), 0.75rem, 600);
+        letter-spacing: 0.8px;
+
+        input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid rgba(0,0,0,0.14);
+        border-radius: 4px;
+        background: #fefefe;
+        @include fnt(var(--tc), 0.85rem, 400);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: var(--gn);
+            box-shadow: 0 0 0 3px rgba(17, 52, 17, 0.08);
+        }
+    }
+
+    textarea {
+        min-height: 110px;
+        resize: vertical;
+    }
+}
+
+.submitBtn,
+.qrBtn,
+.deleteBtn,
+.closeBtn {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    letter-spacing: 1.1px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 15px;
+    background: var(--gn);
+    @include fnt(var(--wt), 0.75rem, 500);
+    text-transform: uppercase;
+
+    &:hover {
+        background: #217821;
+    }
+}
+
+.list {
+    max-height: 560px;
+    overflow-y: auto;
+}
+
+.empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    background: #f1f1f16e;
+    @include fnt(var(--tc), 0.75rem, 470);
+    line-height: 1.8;
+}
+
+.listItem {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+
+    &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+}
+
+.itemInfo {
+    flex: 1;
+    min-width: 0;
+
+    h3 {
+        @include fnt(var(--tc), 0.95rem, 600);
+        line-height: 1.5;
+        margin-bottom: 0.35rem;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.75rem, 470);
+        line-height: 1.7;
+        opacity: 0.8;
+        overflow-wrap: anywhere;
+    }
+
+    .studentLink {
+        color: var(--tc);
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: var(--gn);
+            text-decoration: underline;
+        }
+    }
+}
+
+.itemActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.qrBtn,
+.deleteBtn {
+    padding: 10px 14px;
+    @include fnt(var(--wt), 0.7rem, 500);
+    text-transform: uppercase;
+}
+
+.qrBtn {
+    background: var(--gn);
+
+    &:hover {
+        background: #217821;
+    }
+}
+
+.barcodeBtn {
+    background: #2563eb;
+
+    &:hover {
+        background: #1d4ed8;
+    }
+}
+
+.deleteBtn {
+    background: transparent;
+    border: #b42318 1px solid;
+    color: #b42318;
+
+    &:hover {
+        background: #b42318;
+        color: var(--wt);
+    }
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: rgba(0,0,0,0.68);
+}
+
+.modalContent {
+    width: 100%;
+    max-width: 440px;
+    padding: 1.5rem;
+    background: var(--wt);
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 12px 30px;
+
+    h2 {
+        @include fnt(var(--tc), 1rem, 600);
+        letter-spacing: 1.09px;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.85rem, 400);
+        line-height: 1.7;
+        margin-bottom: 1rem;
+    }
+}
+
+.qrImage {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--wt);
+    border: var(--gn) 1px solid;
+    border-radius: 4px;
+}
+
+.barcodeInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.barcodeImage {
+    max-width: 100%;
+    height: auto;
+    padding: 1rem;
+    background: var(--wt);
+    border: var(--gn) 1px solid;
+    border-radius: 4px;
+}
+
+.studentDetails {
+    text-align: left;
+    width: 100%;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 4px;
+
+    h3 {
+        @include fnt(var(--tc), 0.95rem, 600);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    p {
+        @include fnt(var(--tc), 0.85rem, 400);
+        line-height: 1.7;
+        margin-bottom: 0.5rem;
+        
+        strong {
+            font-weight: 600;
+            color: var(--gn);
+        }
+    }
+}
+
+.closeBtn {
+    width: 100%;
+    padding: 15px;
+    background: var(--gn);
+    @include fnt(var(--wt), 0.75rem, 500);
+    text-transform: uppercase;
+
+    &:hover {
+        background: #217821;
+    }
+}
+
+@media (max-width: 900px) {
+    .adminContainer {
+        padding-top: 2rem;
+    }
+
+    .adminHeader {
+        border-left: none;
+        border-top: #114311 solid 2px;
+        padding: 20px 0 0;
+
+        h1 {
+            @include fnt(var(--tc), 0.9rem, 450);
+        }
+
+        p {
+            @include fnt(var(--tc), 0.85rem, 400);
+        }
+    }
+
+    .tabContent {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .tabs {
+        grid-template-columns: 1fr;
+    }
+
+    .formCard,
+    .listCard {
+        padding: 1.25rem;
+    }
+
+    .listItem {
+        flex-direction: column;
+    }
+
+    .itemActions {
+        width: 100%;
+        flex-direction: row;
+
+        button {
+            flex: 1;
+        }
+    }
+}
+
+// Login styles
+.loginContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.loginCard {
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    background: var(--wt);
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 10px 40px;
+    
+    h1 {
+        @include fnt(var(--tc), 1.5rem, 600);
+        text-align: center;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.9rem, 400);
+        text-align: center;
+        margin-bottom: 2rem;
+        opacity: 0.8;
+        line-height: 1.6;
+    }
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.loginButton {
+    width: 100%;
+    padding: 14px;
+    background: var(--gn);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    @include fnt(var(--wt), 0.85rem, 500);
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+
+    &:hover:not(:disabled) {
+        background: #217821;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.loginFooter {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+
+    p {
+        @include fnt(var(--tc), 0.75rem, 470);
+        opacity: 0.7;
+        margin: 0;
+    }
+}
+
+.error {
+    padding: 0.75rem;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 5px;
+    color: #dc2626;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    
+    p {
+        @include fnt(var(--tc), 1rem, 400);
+    }
+}
+
+.headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+
+    div {
+        flex: 1;
+    }
+}
+
+.logoutButton {
+    padding: 10px 20px;
+    background: transparent;
+    border: #b42318 1px solid;
+    color: #b42318;
+    border-radius: 5px;
+    cursor: pointer;
+    @include fnt(var(--wt), 0.75rem, 500);
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+
+    &:hover {
+        background: #b42318;
+        color: var(--wt);
+    }
+}
+
+// Registration Form Styles
+.registerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.registerCard {
+    width: 100%;
+    max-width: 600px;
+    padding: 2.5rem;
+    background: var(--wt);
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 10px 40px;
+}
+
+.registerHeader {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+        @include fnt(var(--tc), 1.5rem, 600);
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.9rem, 400);
+        opacity: 0.8;
+        line-height: 1.6;
+    }
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 14px;
+    background: var(--gn);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    @include fnt(var(--wt), 0.85rem, 500);
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+
+    &:hover:not(:disabled) {
+        background: #217821;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.registerFooter {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+
+    p {
+        @include fnt(var(--tc), 0.75rem, 470);
+        opacity: 0.7;
+        margin: 0;
+    }
+}
+
+.successMessage {
+    padding: 1rem;
+    background: #d1fae5;
+    border: 1px solid #6ee7b7;
+    border-radius: 5px;
+    color: #065f46;
+    margin-bottom: 1.5rem;
+    text-align: center;
+
+    strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+}
+
+.loadingText {
+    text-align: center;
+    padding: 2rem;
+    @include fnt(var(--tc), 0.9rem, 400);
+    opacity: 0.7;
+}
+
+// Applications List Styles
+.applicationsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.applicationItem {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.applicationInfo {
+    flex: 1;
+
+    h3 {
+        @include fnt(var(--tc), 1rem, 600);
+        margin-bottom: 0.75rem;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.85rem, 400);
+        line-height: 1.7;
+        margin-bottom: 0.5rem;
+
+        strong {
+            font-weight: 600;
+            color: var(--gn);
+        }
+    }
+}
+
+.statusBadge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    @include fnt(var(--wt), 0.75rem, 500);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 0.5rem;
+}
+
+.applicationActions {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        @include fnt(var(--wt), 0.75rem, 500);
+        text-transform: uppercase;
+        letter-spacing: 1.1px;
+        transition: all 0.3s ease;
+    }
+}
+
+.approveBtn {
+    background: var(--gn);
+
+    &:hover {
+        background: #217821;
+    }
+}
+
+.rejectBtn {
+    background: #b42318;
+
+    &:hover {
+        background: #9a1f15;
+    }
+}

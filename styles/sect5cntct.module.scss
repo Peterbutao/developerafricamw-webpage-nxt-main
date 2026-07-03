@@ -1,0 +1,78 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.contact{
+    background-color: #fefefe;
+    .cnt{
+        max-width: var(--max-width);
+        margin: 0 auto;
+        background-image: url('/world.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 20px;
+        text-align: center;
+        
+        @media (max-width: 700px) {
+            padding: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            padding: 10px;
+        }
+        
+        header{
+            h1{
+                @include fnt(var(--tc), 0.7rem, 500);
+                padding: 20px;
+                
+                @media (max-width: 600px) {
+                    font-size: 0.65rem;
+                    padding: 10px;
+                }
+            }
+            a{
+                background-color: var(--gn);
+                padding: 15px ;
+                display: block;
+                border-radius: 5px;
+                @include fnt(var(--wt), 0.75rem, 500);
+                
+                @media (max-width: 600px) {
+                    font-size: 0.7rem;
+                    padding: 10px;
+                }
+            }
+        }
+        footer{
+            a{
+                border-radius: 5px;
+                padding: 15px ;
+                display: block;
+                @include fnt(var(--tc), 0.75rem, 500);
+                border: var(--gn) solid 1px;
+                
+                @media (max-width: 600px) {
+                    font-size: 0.7rem;
+                    padding: 10px;
+                }
+                
+                div{
+                    justify-content: center;
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                    
+                    @media (max-width: 600px) {
+                        gap: 8px;
+                        flex-wrap: wrap;
+                    }
+                }
+
+            }
+        }
+    }
+}

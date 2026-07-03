@@ -1,0 +1,101 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.home{
+    max-width: var(--max-width);
+    margin: 0 auto;
+    section{
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        .image{
+            padding: 10px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            .logo{
+                width: 280px;
+                height: auto;
+            }
+        }
+        .text{
+            margin: 0;
+            border-left: #114311 solid 2px;
+            flex: 2;
+            h1{
+                padding-left: 25px;
+                display: flex;
+                text-align: start;
+                @include fnt(var(--tc), 1.1rem, 450);
+                flex-direction: column;
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+                span{
+                    display: block;
+                    margin-bottom: 0.5rem;
+                }
+            }
+            p{
+                padding-left: 25px;
+                @include fnt(var(--tc), 0.95rem, 400);
+                line-height: 1.8;
+                margin: 0;
+                letter-spacing: 0.3px;
+                opacity: 0.9;
+            }
+        }
+        .link{
+            text-align: center;
+            padding: 10px 0;
+            a{
+                display: block;
+                background-color: #114311;
+                padding: 15px 30px;
+                border-radius: 4px;
+                @include fnt(white, 0.85rem, 450);
+                letter-spacing: 1.1px;
+                transition: background-color 0.3s ease;
+            }
+            a:hover{
+                background-color: #217821;
+            }
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .home{
+        section{
+            flex-direction: column;
+            .text{
+                border-left: none;
+                border-top: #114311 solid 2px;
+                h1{
+                    padding-left: 0;
+                    padding-top: 20px;
+                    @include fnt(var(--tc), 0.9rem, 450);
+                    margin-bottom: 1rem;
+                    span{
+                        margin-bottom: 0.3rem;
+                    }
+                }
+                p{
+                    padding-left: 0;
+                    @include fnt(var(--tc), 0.85rem, 400);
+                }
+            }
+            .link{
+                width: 100%;
+                a{
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

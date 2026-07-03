@@ -1,0 +1,64 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.cards{
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1rem 0;
+    background: transparent;
+    .card{
+        height: auto;
+        min-height: 400px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: var(--wt);
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        
+        @media (max-width: 700px) {
+            min-height: auto;
+            padding: 1.25rem;
+        }
+        main{
+            text-align: start;
+            padding: 1rem 0;
+            h1{
+                @include fnt(var(--tc),  1rem, 600);
+                letter-spacing: 1.09px;
+                padding: 0.5rem 0;
+                text-transform: uppercase;
+                margin-bottom: 0.5rem;
+            }
+            p{
+                @include fnt(var(--tc),  0.85rem, 500);
+                line-height: 1.6;
+            }
+        }
+        footer{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0 0 0;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            margin-top: auto;
+            a:nth-child(1){
+                border: var(--gn) 1px solid;
+                border-radius: 5px;
+                padding: 8px 16px;
+                @include fnt(var(--gn),  0.8rem, 500);
+                transition: all 0.3s ease;
+                &:hover{
+                    background: var(--gn);
+                    color: var(--wt);
+                }
+            }
+            
+        }
+    }
+}

@@ -1,0 +1,92 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.abtcard{
+    max-width: var(--max-width);
+    margin: 5vh auto;
+    padding: 15px;
+    background: var(--wt);
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.304) 0 4px 4px 0;
+    
+    @media (max-width: 700px) {
+        margin: 3vh auto;
+        padding: 10px;
+    }
+    header{
+        .abtcdimgs{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            
+            @media (max-width: 600px) {
+                gap: 15px;
+            }
+            
+            .logo{
+                width: 80px;
+                height: 80px;
+                object-fit: contain;
+                opacity: 0.7;
+                transition: all 0.3s ease;
+                
+                @media (max-width: 600px) {
+                    width: 60px;
+                    height: 60px;
+                }
+                
+                &:hover {
+                    opacity: 1;
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+    main{
+        .mn{
+            padding: 10px 0;
+            h1{
+                text-align: center;
+                @include fnt(#217821, 0.75rem, 500);
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+                letter-spacing: 1.1px;
+            }
+            p:nth-child(3){
+                text-align: center;
+            }
+            p{
+                background: #f1f1f16e;
+                padding: 15px;
+                @include fnt(var(--tc), 0.75rem, 470);
+                line-height: 2;
+                
+                @media (max-width: 600px) {
+                    padding: 10px;
+                    font-size: 0.7rem;
+                    line-height: 1.6;
+                }
+            }
+
+        }
+    }
+    footer{
+        .abtlink{
+            padding: 10px 0;
+            text-align: center;
+            a{
+                display: block;
+                border: var(--gn) 1px solid;
+                @include fnt(var(--tc), 0.7rem, 500);
+                border-radius: 5px;
+                padding: 15px;
+            }
+        }
+    }
+}

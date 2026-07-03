@@ -1,0 +1,172 @@
+@mixin fnt($c, $s, $w) {
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.banner {
+    width: 100%;
+    max-width: 100%;
+    margin: 3vh 0;
+    background: var(--gn);
+    overflow: hidden;
+}
+
+.artbn {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 5vh 1.5rem;
+    background-image: url('/world.png');
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    overflow: hidden;
+}
+
+.coursesCarousel {
+    width: 100%;
+    max-width: 100%;
+    margin: 3vh auto;
+    overflow: hidden;
+}
+
+.coursesScroll {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 220px;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+.courseCard {
+    width: 100%;
+    min-width: 0;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow-wrap: anywhere;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    @media (hover: hover) and (pointer: fine) {
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    h3 {
+        @include fnt(var(--gn), 1.1rem, 600);
+        margin: 0 0 0.8rem;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
+
+    p {
+        @include fnt(#666, 0.85rem, 400);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+}
+
+.artbn > p {
+    @include fnt(var(--wt), 0.8rem, 500);
+    display: flex;
+    justify-content: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+.artbn > a {
+    @include fnt(var(--wt), 0.8rem, 500);
+    display: inline-block;
+    max-width: 100%;
+    padding: 10px 4vh;
+    background: #217821;
+    border-radius: 5px;
+    line-height: 1.4;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+    .banner {
+        margin: 2vh 0;
+    }
+
+    .artbn {
+        padding: 3vh 1rem;
+    }
+
+    .coursesCarousel {
+        margin: 2vh auto;
+    }
+
+    .coursesScroll {
+        grid-auto-columns: 100%;
+        gap: 0.75rem;
+        padding: 0.75rem 0;
+        scroll-snap-type: x mandatory;
+        cursor: auto;
+    }
+
+    .courseCard {
+        padding: 1.15rem;
+        scroll-snap-align: start;
+
+        h3 {
+            font-size: 0.95rem;
+        }
+
+        p {
+            font-size: 0.76rem;
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .artbn {
+        padding-right: 0.85rem;
+        padding-left: 0.85rem;
+    }
+
+    .courseCard {
+        padding: 1rem;
+    }
+
+    .artbn > p {
+        padding: 12px 0;
+        font-size: 0.7rem;
+    }
+
+    .artbn > a {
+        width: 100%;
+        padding: 9px 1rem;
+        font-size: 0.7rem;
+    }
+}

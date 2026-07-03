@@ -1,0 +1,331 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.aboutPage {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 3rem 1rem 8rem;
+}
+
+.eyebrow,
+.sectionHeader p {
+    @include fnt(var(--gn), 0.72rem, 700);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.intro {
+    padding: 2rem 0 3rem;
+    border-bottom: 1px solid rgba(17, 52, 17, 0.16);
+}
+
+.introGrid {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.95fr) minmax(320px, 1.05fr);
+    gap: 3rem;
+    align-items: start;
+    margin-top: 1rem;
+
+    h1 {
+        @include fnt(var(--tc), 2rem, 500);
+        line-height: 1.25;
+        letter-spacing: 0;
+        max-width: 540px;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.95rem, 400);
+        line-height: 1.85;
+        margin-bottom: 1rem;
+        opacity: 0.88;
+    }
+}
+
+.statement {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    margin: 2rem 0;
+    background: var(--wt);
+    border-left: 3px solid var(--gn);
+    box-shadow: rgba(0, 0, 0, 0.08) 0 4px 12px;
+
+    span {
+        @include fnt(var(--gn), 0.75rem, 700);
+        letter-spacing: 1.2px;
+    }
+
+    h2 {
+        @include fnt(var(--tc), 1rem, 700);
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1.1px;
+    }
+
+    p {
+        @include fnt(var(--tc), 1rem, 400);
+        line-height: 1.9;
+        opacity: 0.9;
+    }
+}
+
+.section,
+.partners,
+.splitSection,
+.expertise,
+.cta {
+    padding: 2rem 0;
+}
+
+.sectionHeader {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+
+    h2 {
+        @include fnt(var(--tc), 1.15rem, 600);
+        line-height: 1.55;
+        letter-spacing: 0;
+    }
+}
+
+.partners {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(17, 52, 17, 0.12);
+}
+
+.brandRow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    img {
+        width: 78px;
+        height: 78px;
+        object-fit: contain;
+        padding: 0.65rem;
+        background: var(--wt);
+        border: 1px solid rgba(17, 52, 17, 0.12);
+        border-radius: 6px;
+    }
+}
+
+.principleGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.principleCard {
+    min-height: 210px;
+    padding: 1.25rem;
+    background: var(--wt);
+    border: 1px solid rgba(17, 52, 17, 0.12);
+    border-radius: 8px;
+
+    span {
+        @include fnt(var(--gn), 0.72rem, 700);
+        letter-spacing: 1.1px;
+    }
+
+    h3 {
+        @include fnt(var(--tc), 0.95rem, 700);
+        margin: 1.25rem 0 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.82rem, 450);
+        line-height: 1.75;
+        opacity: 0.86;
+    }
+}
+
+.splitSection {
+    display: grid;
+    grid-template-columns: 1fr 1.35fr;
+    gap: 2rem;
+    align-items: start;
+    border-top: 1px solid rgba(17, 52, 17, 0.12);
+    border-bottom: 1px solid rgba(17, 52, 17, 0.12);
+}
+
+.audienceList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    span {
+        @include fnt(var(--tc), 0.78rem, 600);
+        line-height: 1.4;
+        padding: 0.75rem 0.9rem;
+        background: var(--wt);
+        border: 1px solid rgba(17, 52, 17, 0.16);
+        border-radius: 4px;
+    }
+}
+
+.serviceList {
+    background: var(--wt);
+    border: 1px solid rgba(17, 52, 17, 0.12);
+    border-radius: 8px;
+}
+
+.serviceItem {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+    padding: 1.35rem 1.5rem;
+    border-bottom: 1px solid rgba(17, 52, 17, 0.1);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    h3 {
+        @include fnt(var(--gn), 0.9rem, 700);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.86rem, 450);
+        line-height: 1.75;
+        opacity: 0.88;
+    }
+}
+
+.expertise {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-top: 1rem;
+    padding: 2rem;
+    background: #fefefe;
+    border: 1px solid rgba(17, 52, 17, 0.14);
+    border-radius: 8px;
+
+    h2 {
+        @include fnt(var(--tc), 1.15rem, 700);
+        margin: 0.75rem 0 0.5rem;
+    }
+
+    .credentials {
+        @include fnt(var(--tc), 0.78rem, 500);
+        line-height: 1.7;
+        opacity: 0.75;
+    }
+
+    strong {
+        display: block;
+        @include fnt(var(--gn), 0.82rem, 700);
+        letter-spacing: 1.1px;
+        margin-bottom: 0.7rem;
+        text-transform: uppercase;
+    }
+
+    p {
+        @include fnt(var(--tc), 0.88rem, 400);
+        line-height: 1.85;
+    }
+}
+
+.cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.25rem 0;
+    border-top: 2px solid var(--gn);
+
+    h2 {
+        @include fnt(var(--tc), 1rem, 600);
+        line-height: 1.5;
+    }
+
+    a {
+        display: inline-block;
+        flex-shrink: 0;
+        padding: 14px 24px;
+        background: var(--gn);
+        border-radius: 4px;
+        @include fnt(var(--wt), 0.78rem, 600);
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
+
+        &:hover {
+            background: #217821;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .aboutPage {
+        padding-top: 2rem;
+    }
+
+    .introGrid,
+    .statement,
+    .sectionHeader,
+    .partners,
+    .splitSection,
+    .serviceItem,
+    .expertise {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .introGrid h1 {
+        font-size: 1.45rem;
+    }
+
+    .brandRow {
+        justify-content: flex-start;
+    }
+
+    .principleGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta {
+        align-items: stretch;
+        flex-direction: column;
+
+        a {
+            text-align: center;
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 560px) {
+    .aboutPage {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .statement,
+    .expertise {
+        padding: 1.25rem;
+    }
+
+    .brandRow img {
+        width: 64px;
+        height: 64px;
+    }
+}

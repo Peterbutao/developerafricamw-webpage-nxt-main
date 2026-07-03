@@ -1,0 +1,127 @@
+@mixin fnt($c,$s,$w){
+    color: $c;
+    font-size: $s;
+    font-weight: $w;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.footer{
+    padding: 10px;
+    .ft{
+        background-color: #fefefe;
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 3rem 2rem;
+        header{
+            h1{
+                @include fnt(var(--tc), 0.85rem, 700);
+                letter-spacing: 1.1px;
+                display: grid;
+                place-items:center;
+                margin-bottom: 2rem;
+            }
+        }
+        main{
+            padding: 5vh 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            ul{
+                padding: 0;
+                list-style: none;
+                h1{
+                    @include fnt(var(--tc), 0.85rem, 700);
+                    padding: 10px 0;
+                    margin-bottom: 0.5rem;
+                }
+                li{
+                    padding: 8px 0;
+                    a{
+                        @include fnt(var(--tc), 0.8rem, 500);
+                        transition: all 0.3s ease;
+                        &:hover{
+                            color: var(--gn);
+                            padding-left: 5px;
+                        }
+                    }
+                }
+            }
+        }
+        footer{
+            border: var(--gn) 1px solid ;
+            padding: 10px;
+            .head{
+                h1{
+                    text-align: center;
+                    @include fnt(var(--tc), 0.68rem, 500);
+                    padding: 10px;
+                    a{
+                        @include fnt(var(--gn), 0.71rem, 500);
+                    }
+                }
+            }
+            .bottom{
+                text-align: center;
+                a{
+                    @include fnt(var(--wt), 0.75rem, 450);
+                    display: block;
+                    background: var(--gn);
+                    padding: 15px;
+                    border-radius: 5px;
+                }
+            }
+        }
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .footer{
+        padding: 5px;
+        .ft{
+            padding: 2rem 1rem;
+            main{
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .footer{
+        padding: 0;
+        .ft{
+            padding: 1.5rem 0.75rem;
+            main{
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                
+                ul {
+                    padding: 10px;
+                }
+                
+                li {
+                    padding: 6px 8px !important;
+                }
+                
+                a {
+                    font-size: 0.75rem;
+                }
+            }
+            
+            footer {
+                padding: 8px;
+                
+                .head h1 {
+                    font-size: 0.65rem;
+                    padding: 8px;
+                }
+                
+                .bottom a {
+                    font-size: 0.7rem;
+                    padding: 12px;
+                }
+            }
+        }
+    }
+}
