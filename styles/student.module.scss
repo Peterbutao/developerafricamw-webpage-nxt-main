@@ -30,7 +30,7 @@
     place-items: center;
     background: var(--wt);
     border: 1px solid rgba(17, 52, 17, 0.16);
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: 0 12px 34px rgba(17, 52, 17, 0.16);
 
     img {
@@ -72,7 +72,6 @@
     background: var(--wt);
     border: 1px solid rgba(17, 52, 17, 0.14);
     border-top: 5px solid var(--gn);
-    border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 20px 55px rgba(17, 52, 17, 0.13);
     animation: slideIn 0.28s ease;
@@ -114,7 +113,6 @@
     padding: 0.45rem 0.65rem;
     background: rgba(17, 52, 17, 0.08);
     border: 1px solid rgba(17, 52, 17, 0.12);
-    border-radius: 4px;
     overflow-wrap: anywhere;
 }
 
@@ -140,7 +138,6 @@
     padding: 0.75rem;
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(17, 52, 17, 0.14);
-    border-radius: 8px;
 
     img {
         width: 132px;
@@ -155,6 +152,33 @@
         letter-spacing: 0;
         text-transform: uppercase;
     }
+}
+
+.certificateSection {
+    padding: 1.5rem;
+    background: #fbfdfb;
+    border-bottom: 1px solid rgba(17, 52, 17, 0.12);
+}
+
+.certificatePreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.certificateImage {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border: 1px solid rgba(17, 52, 17, 0.14);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(17, 52, 17, 0.08);
+}
+
+.certificateActions {
+    display: flex;
+    gap: 0.75rem;
 }
 
 .coursesSection {
@@ -182,7 +206,6 @@
     @include fnt(var(--tc), 0.92rem, 600);
     background: #f7faf7;
     border: 1px dashed rgba(17, 52, 17, 0.18);
-    border-radius: 8px;
     opacity: 0.78;
 }
 
@@ -199,7 +222,6 @@
     background: #fbfcfb;
     border: 1px solid rgba(17, 52, 17, 0.12);
     border-left: 4px solid var(--gn);
-    border-radius: 8px;
 }
 
 .courseInfo {
@@ -233,6 +255,28 @@
 .inProgress {
     @include fnt(#715200, 0.76rem, 800);
     background: rgba(255, 193, 7, 0.16);
+}
+
+.certificateLink {
+    margin-top: 0.75rem;
+}
+
+.certificateBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--gn);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: #114311;
+    }
 }
 
 @media (max-width: 700px) {

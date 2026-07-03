@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { supabase } from '../../lib/supabase'
 import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
+import { FaDownload } from 'react-icons/fa'
 
 export default function StudentProfile() {
   const router = useRouter()
@@ -20,7 +21,7 @@ export default function StudentProfile() {
       try {
         const { data: studentData, error: studentError } = await supabase
           .from('students')
-          .select('*, courses(name, description, duration)')
+          .select('*, courses(name, description, duration), certificate_id, certificate_issued_at, certificate_template, certificate_url')
           .eq('studentid', studentId)
           .maybeSingle()
 
@@ -119,8 +120,22 @@ export default function StudentProfile() {
             </div>
           </header>
 
+          {student.certificate_url && (
+            <section className={styles.certificateSection}>
+              <div className={styles.certificatePreview}>
+                <img src={student.certificate_url} alt="Certificate" className={styles.certificateImage} />
+                <div className={styles.certificateActions}>
+                  <a href={student.certificate_url} target="_blank" rel="noopener noreferrer" className={styles.certificateBtn}>
+                    <FaDownload aria-hidden="true" />
+                    Download Certificate
+                  </a>
+                </div>
+              </div>
+            </section>
+          )}
+
           <section className={styles.coursesSection}>
-            <h2>Learning Record</h2>
+            <h2>Course Details</h2>
             {student.courses ? (
               <div className={styles.coursesList}>
                 <div className={styles.courseCard}>
@@ -133,6 +148,9 @@ export default function StudentProfile() {
                     </p>
                     {student.completion_date && (
                       <p>Completed: {new Date(student.completion_date).toLocaleDateString()}</p>
+                    )}
+                    {student.certificate_id && (
+                      <p><strong>Certificate ID:</strong> {student.certificate_id}</p>
                     )}
                   </div>
                 </div>

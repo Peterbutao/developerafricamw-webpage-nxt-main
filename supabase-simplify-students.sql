@@ -10,10 +10,16 @@ BEGIN;
 ALTER TABLE public.students
   ADD COLUMN IF NOT EXISTS course_id UUID REFERENCES public.courses(id) ON DELETE SET NULL,
   ADD COLUMN IF NOT EXISTS completed BOOLEAN NOT NULL DEFAULT false,
-  ADD COLUMN IF NOT EXISTS completion_date TIMESTAMP WITH TIME ZONE;
+  ADD COLUMN IF NOT EXISTS completion_date TIMESTAMP WITH TIME ZONE,
+  ADD COLUMN IF NOT EXISTS certificate_id TEXT,
+  ADD COLUMN IF NOT EXISTS certificate_issued_at TIMESTAMP WITH TIME ZONE,
+  ADD COLUMN IF NOT EXISTS certificate_template TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_students_course_id ON public.students(course_id);
 CREATE INDEX IF NOT EXISTS idx_students_completed ON public.students(completed);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_students_certificate_id
+  ON public.students(certificate_id)
+  WHERE certificate_id IS NOT NULL;
 
 -- 2) Let applications become "converted" after they are turned into students.
 -- Your original setup created this inline check as applications_status_check.
