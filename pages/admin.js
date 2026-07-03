@@ -4,17 +4,9 @@ import { useRouter } from 'next/router'
 import Layout from "/components/Layout"
 import styles from '../styles/admin.module.scss'
 
-const emptyStudent = { name: '', email: '', phone: '', studentid: '' }
+const emptyStudent = { name: '', email: '', phone: '', studentid: '', course_id: '' }
 const emptyCourse = { name: '', description: '', duration: '' }
-const emptyEnrollment = { studentId: '', courseId: '', completionDate: '', completed: false }
-const tabs = ['students', 'courses', 'enrollments', 'applications']
-
-const normalizeEnrollment = (enrollment) => ({
-  ...enrollment,
-  studentId: enrollment.studentId ?? enrollment.student_id,
-  courseId: enrollment.courseId ?? enrollment.course_id,
-  completionDate: enrollment.completionDate ?? enrollment.completion_date
-})
+const tabs = ['students', 'courses', 'applications']
 
 function Field({ field, value, onChange, children }) {
   const { name, label, type = 'text', required, placeholder, rows } = field
@@ -79,7 +71,6 @@ export default function Admin() {
   const router = useRouter()
   const [students, setStudents] = useState([])
   const [courses, setCourses] = useState([])
-  const [enrollments, setEnrollments] = useState([])
   const [applications, setApplications] = useState([])
   const [loadingApplications, setLoadingApplications] = useState(false)
   const [activeTab, setActiveTab] = useState('students')
@@ -88,24 +79,20 @@ export default function Admin() {
   const [barcodeStudentId, setBarcodeStudentId] = useState('')
   const [studentForm, setStudentForm] = useState(emptyStudent)
   const [courseForm, setCourseForm] = useState(emptyCourse)
-  const [enrollmentForm, setEnrollmentForm] = useState(emptyEnrollment)
+  const [progressForms, setProgressForms] = useState({})
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [loadingData, setLoadingData] = useState(false)
-  const [approvedApplicants, setApprovedApplicants] = useState([])
-  const [loadingApproved, setLoadingApproved] = useState(false)
 
-  // Check authentication status
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession()
-      
+
       if (!session) {
         router.push('/login')
         return
       }
 
-      // Check if user is admin
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('role, email')
@@ -124,7 +111,6 @@ export default function Admin() {
 
     checkAuth()
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) {
         router.push('/login')
@@ -139,47 +125,41 @@ export default function Admin() {
     router.push('/login')
   }
 
-  // Auto-generate student ID with format DEV-MW{YY}{COHORT}{SEQ}
   const generateStudentId = () => {
     const now = new Date()
     const year = now.getFullYear().toString().slice(-2)
     const cohort = '01'
     const prefix = `DEV-MW${year}${cohort}`
-    
+
     const existingNumbers = students
       .filter(s => s.studentid && s.studentid.startsWith(prefix))
-      .map(s => {
-        const numPart = s.studentid.slice(prefix.length)
-        return parseInt(numPart, 10)
-      })
+      .map(s => parseInt(s.studentid.slice(prefix.length), 10))
       .filter(num => !isNaN(num))
-    
+
     const nextSeq = existingNumbers.length > 0 ? Math.max(...existingNumbers) + 1 : 1
-    const seqStr = nextSeq.toString().padStart(2, '0')
-    
-    return `${prefix}${seqStr}`
+    return `${prefix}${nextSeq.toString().padStart(2, '0')}`
   }
 
-  // Auto-fill student ID when form is initialized
   useEffect(() => {
     if (!studentForm.studentid) {
-      const newId = generateStudentId()
-      setStudentForm(prev => ({ ...prev, studentid: newId }))
+      setStudentForm(prev => ({ ...prev, studentid: generateStudentId() }))
     }
   }, [students.length])
 
-  // Fetch data from Supabase
+  const hydrateProgressForms = (studentItems) => {
+    setProgressForms(Object.fromEntries(studentItems.map((student) => [
+      student.id,
+      {
+        course_id: student.course_id || '',
+        completion_date: student.completion_date || '',
+        completed: Boolean(student.completed)
+      }
+    ])))
+  }
+
   const fetchData = async () => {
     setLoadingData(true)
     try {
-      const { data: studentsData, error: studentsError } = await supabase
-        .from('students')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (studentsError) throw studentsError
-      setStudents(studentsData || [])
-
       const { data: coursesData, error: coursesError } = await supabase
         .from('courses')
         .select('*')
@@ -188,13 +168,14 @@ export default function Admin() {
       if (coursesError) throw coursesError
       setCourses(coursesData || [])
 
-      const { data: enrollmentsData, error: enrollmentsError } = await supabase
-        .from('enrollments')
-        .select('*')
+      const { data: studentsData, error: studentsError } = await supabase
+        .from('students')
+        .select('*, courses(name, description, duration)')
         .order('created_at', { ascending: false })
 
-      if (enrollmentsError) throw enrollmentsError
-      setEnrollments((enrollmentsData || []).map(normalizeEnrollment))
+      if (studentsError) throw studentsError
+      setStudents(studentsData || [])
+      hydrateProgressForms(studentsData || [])
     } catch (err) {
       console.error('Error fetching data:', err)
       alert('Error loading data: ' + err.message)
@@ -203,7 +184,6 @@ export default function Admin() {
     }
   }
 
-  // Fetch data when user is authenticated
   useEffect(() => {
     if (user) {
       fetchData()
@@ -211,18 +191,16 @@ export default function Admin() {
   }, [user])
 
   const studentById = useMemo(() => new Map(students.map((student) => [student.id, student])), [students])
-  const courseById = useMemo(() => new Map(courses.map((course) => [course.id, course])), [courses])
 
-  // Add student to Supabase
   const handleAddStudent = async (event) => {
     event.preventDefault()
-    
+
     const existingStudent = students.find(s => s.studentid === studentForm.studentid || s.email === studentForm.email)
     if (existingStudent) {
       alert('A student with this Student ID or Email already exists!')
       return
     }
-    
+
     try {
       const { data, error } = await supabase
         .from('students')
@@ -230,17 +208,24 @@ export default function Admin() {
           name: studentForm.name,
           email: studentForm.email,
           phone: studentForm.phone,
-          studentid: studentForm.studentid
+          studentid: studentForm.studentid,
+          course_id: studentForm.course_id || null,
+          completed: false,
+          completion_date: null
         }])
-        .select()
+        .select('*, courses(name, description, duration)')
         .single()
 
       if (error) throw error
-      
+
       setStudents((items) => [data, ...items])
-      setStudentForm(emptyStudent)
+      setProgressForms((forms) => ({
+        ...forms,
+        [data.id]: { course_id: data.course_id || '', completion_date: data.completion_date || '', completed: Boolean(data.completed) }
+      }))
+      setStudentForm({ ...emptyStudent, studentid: generateStudentId() })
       alert('Student added successfully!')
-      
+
       if (data.id) {
         setTimeout(() => {
           generateBarcode(data.id)
@@ -253,7 +238,7 @@ export default function Admin() {
 
   const handleAddCourse = async (event) => {
     event.preventDefault()
-    
+
     try {
       const { data, error } = await supabase
         .from('courses')
@@ -266,7 +251,7 @@ export default function Admin() {
         .single()
 
       if (error) throw error
-      
+
       setCourses((items) => [data, ...items])
       setCourseForm(emptyCourse)
       alert('Course added successfully!')
@@ -275,34 +260,44 @@ export default function Admin() {
     }
   }
 
-  const addEnrollment = async (event) => {
-    event.preventDefault()
-    
+  const updateStudentProgressForm = (studentId, name, value) => {
+    setProgressForms((forms) => ({
+      ...forms,
+      [studentId]: {
+        ...forms[studentId],
+        [name]: value
+      }
+    }))
+  }
+
+  const saveStudentProgress = async (studentId) => {
+    const form = progressForms[studentId]
+    if (!form) return
+
     try {
       const { data, error } = await supabase
-        .from('enrollments')
-        .insert([{
-          studentId: enrollmentForm.studentId,
-          courseId: enrollmentForm.courseId,
-          completion_date: enrollmentForm.completionDate || null,
-          completed: enrollmentForm.completed || false
-        }])
-        .select()
+        .from('students')
+        .update({
+          course_id: form.course_id || null,
+          completed: Boolean(form.completed),
+          completion_date: form.completion_date || null
+        })
+        .eq('id', studentId)
+        .select('*, courses(name, description, duration)')
         .single()
 
       if (error) throw error
-      
-      setEnrollments((items) => [normalizeEnrollment(data), ...items])
-      setEnrollmentForm(emptyEnrollment)
-      alert('Student enrolled successfully!')
+
+      setStudents((items) => items.map((student) => student.id === studentId ? data : student))
+      alert('Student course progress updated.')
     } catch (err) {
-      alert('Error enrolling student: ' + err.message)
+      alert('Error updating student: ' + err.message)
     }
   }
 
   const deleteStudent = async (id) => {
     if (!confirm('Are you sure you want to delete this student?')) return
-    
+
     try {
       const { error } = await supabase
         .from('students')
@@ -310,9 +305,13 @@ export default function Admin() {
         .eq('id', id)
 
       if (error) throw error
-      
+
       setStudents((items) => items.filter((student) => student.id !== id))
-      setEnrollments((items) => items.filter((enrollment) => enrollment.studentId !== id))
+      setProgressForms((forms) => {
+        const nextForms = { ...forms }
+        delete nextForms[id]
+        return nextForms
+      })
     } catch (err) {
       alert('Error deleting student: ' + err.message)
     }
@@ -320,7 +319,7 @@ export default function Admin() {
 
   const deleteCourse = async (id) => {
     if (!confirm('Are you sure you want to delete this course?')) return
-    
+
     try {
       const { error } = await supabase
         .from('courses')
@@ -328,125 +327,77 @@ export default function Admin() {
         .eq('id', id)
 
       if (error) throw error
-      
+
       setCourses((items) => items.filter((course) => course.id !== id))
-      setEnrollments((items) => items.filter((enrollment) => enrollment.courseId !== id))
+      fetchData()
     } catch (err) {
       alert('Error deleting course: ' + err.message)
     }
   }
 
-  // Fetch approved applications
-  const fetchApprovedApplicants = async () => {
-    setLoadingApproved(true)
-    try {
-      const { data, error } = await supabase
-        .from('applications')
-        .select('*, courses(name)')
-        .eq('status', 'approved')
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      setApprovedApplicants(data || [])
-    } catch (err) {
-      console.error('Error fetching approved applicants:', err)
-    } finally {
-      setLoadingApproved(false)
-    }
-  }
-
-  // Fetch approved applicants when switching to students tab
-  useEffect(() => {
-    if (activeTab === 'students') {
-      fetchApprovedApplicants()
-    }
-  }, [activeTab])
-
-  // Convert approved applicant to student with ID
-  const convertToStudent = async (applicant) => {
-    const studentid = generateStudentId()
-    
-    try {
-      const { data, error } = await supabase
-        .from('students')
-        .insert([{
-          name: applicant.name,
-          email: applicant.email,
-          phone: applicant.phone,
-          studentid: studentid
-        }])
-        .select()
-        .single()
-
-      if (error) throw error
-      
-      setStudents((items) => [data, ...items])
-      
-      // Update application status to indicate student was created
-      await supabase
-        .from('applications')
-        .update({ status: 'converted' })
-        .eq('id', applicant.id)
-      
-      // Refresh approved applicants list
-      fetchApprovedApplicants()
-      
-      alert(`Student created successfully! ID: ${studentid}`)
-      
-      // Generate barcode for the new student
-      if (data.id) {
-        setTimeout(() => {
-          generateBarcode(data.id)
-        }, 100)
-      }
-    } catch (err) {
-      alert('Error creating student: ' + err.message)
-    }
-  }
-
-  // Fetch applications from Supabase
   const fetchApplications = async () => {
     setLoadingApplications(true)
     try {
       const { data, error } = await supabase
         .from('applications')
         .select('*, courses(name)')
-        .order('created_at', { descending: false })
+        .order('created_at', { ascending: false })
 
       if (error) throw error
       setApplications(data || [])
     } catch (err) {
       console.error('Error fetching applications:', err)
+      alert('Error loading applications: ' + err.message)
     } finally {
       setLoadingApplications(false)
     }
   }
 
-  // Fetch applications when switching to applications tab
   useEffect(() => {
     if (activeTab === 'applications') {
       fetchApplications()
     }
   }, [activeTab])
 
-  // Approve application
-  const approveApplication = async (applicationId) => {
+  const approveApplication = async (application) => {
+    const studentid = generateStudentId()
+
     try {
-      const { error } = await supabase
-        .from('applications')
-        .update({ status: 'approved', updated_at: new Date().toISOString() })
-        .eq('id', applicationId)
+      const { data, error } = await supabase
+        .from('students')
+        .insert([{
+          name: application.name,
+          email: application.email,
+          phone: application.phone,
+          studentid,
+          course_id: application.course_id,
+          completed: false,
+          completion_date: null
+        }])
+        .select('*, courses(name, description, duration)')
+        .single()
 
       if (error) throw error
 
+      const { error: updateError } = await supabase
+        .from('applications')
+        .update({ status: 'converted', updated_at: new Date().toISOString() })
+        .eq('id', application.id)
+
+      if (updateError) throw updateError
+
+      setStudents((items) => [data, ...items])
+      setProgressForms((forms) => ({
+        ...forms,
+        [data.id]: { course_id: data.course_id || '', completion_date: '', completed: false }
+      }))
       fetchApplications()
-      alert('Application approved successfully!')
+      alert(`Student created successfully! ID: ${studentid}`)
     } catch (err) {
       alert('Error approving application: ' + err.message)
     }
   }
 
-  // Reject application
   const rejectApplication = async (applicationId) => {
     if (!confirm('Are you sure you want to reject this application?')) return
 
@@ -465,15 +416,12 @@ export default function Admin() {
     }
   }
 
-  // Get status badge color
   const getStatusColor = (status) => {
     switch (status) {
-      case 'approved':
-        return '#217821'
-      case 'rejected':
-        return '#b42318'
       case 'converted':
         return '#2563eb'
+      case 'rejected':
+        return '#b42318'
       default:
         return '#d97706'
     }
@@ -483,19 +431,11 @@ export default function Admin() {
     const student = studentById.get(studentId)
     if (!student) return
 
-    const profileCourses = enrollments
-      .filter((enrollment) => enrollment.studentId === studentId)
-      .map((enrollment) => {
-        const course = courseById.get(enrollment.courseId)
-        return course ? { ...course, completed: enrollment.completed, completionDate: enrollment.completionDate } : null
-      })
-      .filter(Boolean)
-
     const QRCode = (await import('qrcode')).default
-    const profileUrl = `https://developmentafricamw.pages.dev/student/${student.id}`
+    const profileUrl = `https://developmentafricamw.pages.dev/student/${student.studentid}`
     const qrDataUrl = await QRCode.toDataURL(JSON.stringify({
       student,
-      courses: profileCourses,
+      course: student.courses || null,
       profileUrl
     }), {
       width: 300,
@@ -511,9 +451,9 @@ export default function Admin() {
     if (!student) return
 
     setBarcodeStudentId(studentId)
-    
+
     const QRCode = (await import('qrcode')).default
-    const profileUrl = `https://developmentafricamw.pages.dev/student/${student.id}`
+    const profileUrl = `https://developmentafricamw.pages.dev/student/${student.studentid}`
     const qrDataUrl = await QRCode.toDataURL(JSON.stringify({
       student,
       profileUrl,
@@ -527,7 +467,7 @@ export default function Admin() {
       },
       errorCorrectionLevel: 'H'
     })
-    
+
     setBarcodeUrl(qrDataUrl)
   }
 
@@ -552,7 +492,7 @@ export default function Admin() {
           <div className={styles.headerContent}>
             <div>
               <h1>Admin Dashboard</h1>
-              <p>Manage students, courses, and enrollments for Development Africa MW learning programs.</p>
+              <p>Manage students, courses, and completion records in one place.</p>
             </div>
             <button onClick={handleLogout} className={styles.logoutButton}>
               Logout
@@ -574,94 +514,118 @@ export default function Admin() {
 
         {activeTab === 'students' && (
           <div className={styles.tabContent}>
-            <div>
-              <FormCard
-                title="Add New Student"
-                fields={[
-                  { name: 'studentid', label: 'Student ID *', required: true, placeholder: 'e.g., STU001' },
-                  { name: 'name', label: 'Full Name *', required: true, placeholder: 'John Doe' },
-                  { name: 'email', label: 'Email *', type: 'email', required: true, placeholder: 'john@example.com' },
-                  { name: 'phone', label: 'Phone', type: 'tel', placeholder: '+265 888 123 456' }
-                ]}
-                form={studentForm}
-                setForm={setStudentForm}
-                onSubmit={handleAddStudent}
-                submitLabel="Add Student"
+            <FormCard
+              title="Add Student"
+              form={studentForm}
+              setForm={setStudentForm}
+              onSubmit={handleAddStudent}
+              submitLabel="Add Student"
+            >
+              <Field
+                field={{ name: 'studentid', label: 'Student ID *', required: true, placeholder: 'e.g., DEV-MW260101' }}
+                value={studentForm.studentid}
+                onChange={(name, value) => setStudentForm((form) => ({ ...form, [name]: value }))}
               />
-              
-              {/* Approved Applicants Section */}
-              <div className={styles.formCard} style={{ marginTop: '1.5rem' }}>
-                <h2>Approved Applicants ({approvedApplicants.length})</h2>
-                <p style={{ fontSize: '0.85rem', opacity: 0.7, marginBottom: '1rem' }}>
-                  Assign student IDs and generate QR codes for approved applicants
-                </p>
-                {loadingApproved ? (
-                  <p className={styles.loadingText}>Loading approved applicants...</p>
-                ) : approvedApplicants.length === 0 ? (
-                  <p className={styles.empty}>No approved applicants. Approve applications first in the Applications tab.</p>
-                ) : (
-                  <div className={styles.applicationsList}>
-                    {approvedApplicants.map((applicant) => (
-                      <div key={applicant.id} className={styles.applicationItem}>
-                        <div className={styles.applicationInfo}>
-                          <h3>{applicant.name}</h3>
-                          <p><strong>Email:</strong> {applicant.email}</p>
-                          <p><strong>Phone:</strong> {applicant.phone}</p>
-                          <p><strong>Course:</strong> {applicant.courses?.name || 'N/A'}</p>
-                          <p><strong>Applied:</strong> {new Date(applicant.created_at).toLocaleDateString()}</p>
-                        </div>
-                        <div className={styles.applicationActions}>
-                          <button 
-                            onClick={() => convertToStudent(applicant)} 
-                            className={styles.approveBtn}
-                          >
-                            Assign ID & Create
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+              <Field
+                field={{ name: 'name', label: 'Full Name *', required: true, placeholder: 'Student name' }}
+                value={studentForm.name}
+                onChange={(name, value) => setStudentForm((form) => ({ ...form, [name]: value }))}
+              />
+              <Field
+                field={{ name: 'email', label: 'Email *', type: 'email', required: true, placeholder: 'student@example.com' }}
+                value={studentForm.email}
+                onChange={(name, value) => setStudentForm((form) => ({ ...form, [name]: value }))}
+              />
+              <Field
+                field={{ name: 'phone', label: 'Phone', type: 'tel', placeholder: '+265 888 123 456' }}
+                value={studentForm.phone}
+                onChange={(name, value) => setStudentForm((form) => ({ ...form, [name]: value }))}
+              />
+              <div className={styles.formGroup}>
+                <label>Course *</label>
+                <select
+                  value={studentForm.course_id}
+                  onChange={(e) => setStudentForm((form) => ({ ...form, course_id: e.target.value }))}
+                  required
+                >
+                  <option value="">-- Select Course --</option>
+                  {courses.map((course) => (
+                    <option key={course.id} value={course.id}>{course.name}</option>
+                  ))}
+                </select>
               </div>
-            </div>
-            
-            <ListCard title="Students List" count={students.length} empty="No students added yet">
-              {students.map((student) => (
-                <div key={student.id} className={styles.listItem}>
-                  <div className={styles.itemInfo}>
-                    <a href={`/student/${student.studentid}`} className={styles.studentLink}>
-                      <h3>{student.name}</h3>
-                    </a>
-                    <p>ID: {student.studentid}</p>
-                    <p>Email: {student.email}</p>
-                    {student.phone && <p>Phone: {student.phone}</p>}
+            </FormCard>
+
+            <ListCard title="Students" count={students.length} empty={loadingData ? 'Loading students...' : 'No students yet'}>
+              {students.map((student) => {
+                const form = progressForms[student.id] || { course_id: '', completion_date: '', completed: false }
+
+                return (
+                  <div key={student.id} className={styles.listItem}>
+                    <div className={styles.itemInfo}>
+                      <a href={`/student/${student.studentid}`} className={styles.studentLink}>
+                        <h3>{student.name}</h3>
+                      </a>
+                      <p>ID: {student.studentid}</p>
+                      <p>Email: {student.email}</p>
+                      {student.phone && <p>Phone: {student.phone}</p>}
+                      <p>Course: {student.courses?.name || 'No course selected'}</p>
+                      <p>Status: {student.completed ? 'Completed' : 'In Progress'}</p>
+                      {student.completion_date && <p>Completed: {new Date(student.completion_date).toLocaleDateString()}</p>}
+
+                      <div className={styles.progressControls}>
+                        <select
+                          value={form.course_id}
+                          onChange={(e) => updateStudentProgressForm(student.id, 'course_id', e.target.value)}
+                        >
+                          <option value="">-- Select Course --</option>
+                          {courses.map((course) => (
+                            <option key={course.id} value={course.id}>{course.name}</option>
+                          ))}
+                        </select>
+                        <input
+                          type="date"
+                          value={form.completion_date || ''}
+                          onChange={(e) => updateStudentProgressForm(student.id, 'completion_date', e.target.value)}
+                        />
+                        <label className={styles.checkboxLabel}>
+                          <input
+                            type="checkbox"
+                            checked={form.completed}
+                            onChange={(e) => updateStudentProgressForm(student.id, 'completed', e.target.checked)}
+                          />
+                          Completed
+                        </label>
+                        <button onClick={() => saveStudentProgress(student.id)} className={styles.saveBtn}>Save</button>
+                      </div>
+                    </div>
+                    <div className={styles.itemActions}>
+                      <button onClick={() => generateQRCode(student.id)} className={styles.qrBtn}>Profile QR</button>
+                      <button onClick={() => generateBarcode(student.id)} className={styles.barcodeBtn}>Student QR</button>
+                      <button onClick={() => deleteStudent(student.id)} className={styles.deleteBtn}>Delete</button>
+                    </div>
                   </div>
-                  <div className={styles.itemActions}>
-                    <button onClick={() => generateQRCode(student.id)} className={styles.qrBtn}>Profile QR</button>
-                    <button onClick={() => generateBarcode(student.id)} className={styles.barcodeBtn}>Student QR</button>
-                    <button onClick={() => deleteStudent(student.id)} className={styles.deleteBtn}>Delete</button>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </ListCard>
           </div>
         )}
 
         {activeTab === 'courses' && (
           <div className={styles.tabContent}>
-              <FormCard
-                title="Add New Course"
-                fields={[
-                  { name: 'name', label: 'Course Name *', required: true, placeholder: 'e.g., Web Development Fundamentals' },
-                  { name: 'description', label: 'Description', type: 'textarea', placeholder: 'Course description...' },
-                  { name: 'duration', label: 'Duration', placeholder: 'e.g., 12 weeks' }
-                ]}
-                form={courseForm}
-                setForm={setCourseForm}
-                onSubmit={handleAddCourse}
-                submitLabel="Add Course"
-              />
-            <ListCard title="Courses List" count={courses.length} empty="No courses added yet">
+            <FormCard
+              title="Add Course"
+              fields={[
+                { name: 'name', label: 'Course Name *', required: true, placeholder: 'e.g., Web Development Fundamentals' },
+                { name: 'description', label: 'Description', type: 'textarea', placeholder: 'Course description...' },
+                { name: 'duration', label: 'Duration', placeholder: 'e.g., 12 weeks' }
+              ]}
+              form={courseForm}
+              setForm={setCourseForm}
+              onSubmit={handleAddCourse}
+              submitLabel="Add Course"
+            />
+            <ListCard title="Courses" count={courses.length} empty="No courses added yet">
               {courses.map((course) => (
                 <div key={course.id} className={styles.listItem}>
                   <div className={styles.itemInfo}>
@@ -676,115 +640,37 @@ export default function Admin() {
           </div>
         )}
 
-        {activeTab === 'enrollments' && (
-          <div className={styles.tabContent}>
-            <FormCard
-              title="Enroll Student in Course"
-              form={enrollmentForm}
-              setForm={setEnrollmentForm}
-              onSubmit={addEnrollment}
-              submitLabel="Enroll Student"
+        {activeTab === 'applications' && (
+          <div className={styles.tabContentSingle}>
+            <ListCard
+              title="Applications"
+              count={applications.length}
+              empty={loadingApplications ? 'Loading applications...' : 'No applications yet'}
             >
-              <div className={styles.formGroup}>
-                <label>Select Student *</label>
-                <select
-                  value={enrollmentForm.studentId}
-                  onChange={(e) => setEnrollmentForm((form) => ({ ...form, studentId: e.target.value }))}
-                  required
-                >
-                  <option value="">-- Select Student --</option>
-                  {students.map((student) => (
-                    <option key={student.id} value={student.id}>{student.name} ({student.studentid})</option>
-                  ))}
-                </select>
-              </div>
-              <div className={styles.formGroup}>
-                <label>Select Course *</label>
-                <select
-                  value={enrollmentForm.courseId}
-                  onChange={(e) => setEnrollmentForm((form) => ({ ...form, courseId: e.target.value }))}
-                  required
-                >
-                  <option value="">-- Select Course --</option>
-                  {courses.map((course) => (
-                    <option key={course.id} value={course.id}>{course.name}</option>
-                  ))}
-                </select>
-              </div>
-              <Field
-                field={{ name: 'completionDate', label: 'Completion Date', type: 'date' }}
-                value={enrollmentForm.completionDate}
-                onChange={(name, value) => setEnrollmentForm((form) => ({ ...form, [name]: value }))}
-              />
-              <Field
-                field={{ name: 'completed', label: 'Course Completed', type: 'checkbox' }}
-                value={enrollmentForm.completed}
-                onChange={(name, value) => setEnrollmentForm((form) => ({ ...form, [name]: value }))}
-              />
-            </FormCard>
-            <ListCard title="Enrollments List" count={enrollments.length} empty="No enrollments yet">
-              {enrollments.map((enrollment) => {
-                const student = studentById.get(enrollment.studentId)
-                const course = courseById.get(enrollment.courseId)
-
-                return (
-                  <div key={enrollment.id} className={styles.listItem}>
-                    <div className={styles.itemInfo}>
-                      <h3>{student?.name || 'Unknown Student'}</h3>
-                      <p>Course: {course?.name || 'Unknown Course'}</p>
-                      <p>Status: {enrollment.completed ? 'Completed' : 'In Progress'}</p>
-                      {enrollment.completionDate && <p>Completed: {new Date(enrollment.completionDate).toLocaleDateString()}</p>}
+              {applications.map((application) => (
+                <div key={application.id} className={styles.applicationItem}>
+                  <div className={styles.applicationInfo}>
+                    <h3>{application.name}</h3>
+                    <p><strong>Email:</strong> {application.email}</p>
+                    <p><strong>Phone:</strong> {application.phone}</p>
+                    <p><strong>Course:</strong> {application.courses?.name || 'N/A'}</p>
+                    <p><strong>Applied:</strong> {new Date(application.created_at).toLocaleDateString()}</p>
+                    <div className={styles.statusBadge} style={{ backgroundColor: getStatusColor(application.status) }}>
+                      {application.status}
                     </div>
                   </div>
-                )
-              })}
-            </ListCard>
-          </div>
-        )}
-
-        {activeTab === 'applications' && (
-          <div className={styles.tabContent}>
-            <ListCard 
-              title="Applications" 
-              count={applications.length} 
-              empty="No applications yet"
-            >
-              {loadingApplications ? (
-                <p className={styles.loadingText}>Loading applications...</p>
-              ) : (
-                <div className={styles.applicationsList}>
-                  {applications.map((application) => (
-                    <div key={application.id} className={styles.applicationItem}>
-                      <div className={styles.applicationInfo}>
-                        <h3>{application.name}</h3>
-                        <p><strong>Email:</strong> {application.email}</p>
-                        <p><strong>Phone:</strong> {application.phone}</p>
-                        <p><strong>Course:</strong> {application.courses?.name || 'N/A'}</p>
-                        <p><strong>Applied:</strong> {new Date(application.created_at).toLocaleDateString()}</p>
-                        <div className={styles.statusBadge} style={{ backgroundColor: getStatusColor(application.status) }}>
-                          {application.status}
-                        </div>
-                      </div>
-                      {application.status === 'pending' && (
-                        <div className={styles.applicationActions}>
-                          <button 
-                            onClick={() => approveApplication(application.id)} 
-                            className={styles.approveBtn}
-                          >
-                            Approve
-                          </button>
-                          <button 
-                            onClick={() => rejectApplication(application.id)} 
-                            className={styles.rejectBtn}
-                          >
-                            Reject
-                          </button>
-                        </div>
-                      )}
+                  {application.status === 'pending' && (
+                    <div className={styles.applicationActions}>
+                      <button onClick={() => approveApplication(application)} className={styles.approveBtn}>
+                        Approve & Create Student
+                      </button>
+                      <button onClick={() => rejectApplication(application.id)} className={styles.rejectBtn}>
+                        Reject
+                      </button>
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
+              ))}
             </ListCard>
           </div>
         )}
@@ -803,20 +689,21 @@ export default function Admin() {
         {barcodeUrl && barcodeStudentId && (() => {
           const barcodeStudent = studentById.get(barcodeStudentId)
           if (!barcodeStudent) return null
-          
+
           return (
             <div className={styles.modal}>
               <div className={styles.modalContent}>
-                <h2>Student Profile Barcode</h2>
+                <h2>Student Profile QR</h2>
                 <div className={styles.barcodeInfo}>
-                  <img src={barcodeUrl} alt="Barcode" className={styles.barcodeImage} />
+                  <img src={barcodeUrl} alt="Student QR" className={styles.barcodeImage} />
                   <div className={styles.studentDetails}>
                     <h3>Student Information</h3>
                     <p><strong>Name:</strong> {barcodeStudent.name}</p>
                     <p><strong>Student ID:</strong> {barcodeStudent.studentid}</p>
                     <p><strong>Email:</strong> {barcodeStudent.email}</p>
                     <p><strong>Phone:</strong> {barcodeStudent.phone || 'N/A'}</p>
-                    <p><strong>Profile Link:</strong> https://developmentafricamw.pages.dev/{barcodeStudent.studentid}</p>
+                    <p><strong>Course:</strong> {barcodeStudent.courses?.name || 'N/A'}</p>
+                    <p><strong>Profile Link:</strong> https://developmentafricamw.pages.dev/student/{barcodeStudent.studentid}</p>
                   </div>
                 </div>
                 <button onClick={() => { setBarcodeUrl(''); setBarcodeStudentId('') }} className={styles.closeBtn}>Close</button>

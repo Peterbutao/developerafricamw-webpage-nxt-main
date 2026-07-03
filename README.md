@@ -1,12 +1,12 @@
 # Developer Africa MW Webpage
 
-A Next.js admin dashboard for managing students, courses, and enrollments at Development Africa MW.
+A Next.js admin dashboard for managing students, courses, and completion records at Development Africa MW.
 
 ## Features
 
 - Student management with auto-generated student IDs
 - Course management
-- Student enrollment tracking
+- Student course and completion tracking
 - QR code and barcode generation for student profiles
 - Supabase authentication with admin-only access
 - Responsive design
@@ -106,7 +106,7 @@ Open http://localhost:3000 in your browser.
 1. **Login**: Access `/login` and enter your admin credentials
 2. **Manage Students**: Add, view, and delete students. Auto-generated student IDs follow the format `DEV-MW{YY}{COHORT}{SEQ}`
 3. **Manage Courses**: Add and delete courses
-4. **Enroll Students**: Enroll students in courses and track completion status
+4. **Track Completion**: Assign a course to each student and update completion status/date
 5. **Generate QR Codes**: Create QR codes for student profiles that can be scanned for quick access
 6. **Logout**: Click the logout button to sign out
 

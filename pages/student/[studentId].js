@@ -4,74 +4,31 @@ import { supabase } from '../../lib/supabase'
 import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
 
-const normalizeEnrollment = (enrollment) => ({
-  ...enrollment,
-  studentId: enrollment.studentId ?? enrollment.student_id,
-  courseId: enrollment.courseId ?? enrollment.course_id,
-  completionDate: enrollment.completionDate ?? enrollment.completion_date
-})
-
 export default function StudentProfile() {
   const router = useRouter()
   const { studentId } = router.query
-  
+
   const [student, setStudent] = useState(null)
-  const [courses, setCourses] = useState([])
   const [qrCodeUrl, setQrCodeUrl] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!studentId) return
-    
+
     const fetchStudentData = async () => {
       setLoading(true)
-      setCourses([])
       try {
-        // Fetch student by studentId (not the UUID id)
         const { data: studentData, error: studentError } = await supabase
           .from('students')
-          .select('*')
+          .select('*, courses(name, description, duration)')
           .eq('studentid', studentId)
           .maybeSingle()
 
         if (studentError) throw studentError
-        if (!studentData) {
-          setStudent(null)
-          setLoading(false)
-          return
-        }
-
-        setStudent(studentData)
-
-        // Fetch enrollments for this student
-        const { data: enrollmentsData, error: enrollmentsError } = await supabase
-          .from('enrollments')
-          .select('*')
-          .eq('studentId', studentData.id)
-
-        if (enrollmentsError) throw enrollmentsError
-        const normalizedEnrollments = (enrollmentsData || []).map(normalizeEnrollment)
-
-        // Fetch course details for each enrollment
-        if (normalizedEnrollments.length > 0) {
-          const courseIds = normalizedEnrollments.map(e => e.courseId)
-          const { data: coursesData, error: coursesError } = await supabase
-            .from('courses')
-            .select('*')
-            .in('id', courseIds)
-
-          if (coursesError) throw coursesError
-
-          // Merge enrollment data with course data
-          const enrolledCourses = normalizedEnrollments.map(enrollment => {
-            const course = coursesData.find(c => c.id === enrollment.courseId)
-            return course ? { ...course, completed: enrollment.completed, completionDate: enrollment.completionDate } : null
-          }).filter(Boolean)
-
-          setCourses(enrolledCourses)
-        }
+        setStudent(studentData || null)
       } catch (err) {
         console.error('Error fetching student data:', err)
+        setStudent(null)
       } finally {
         setLoading(false)
       }
@@ -89,6 +46,7 @@ export default function StudentProfile() {
       const qrDataUrl = await QRCode.toDataURL(JSON.stringify({
         studentId: student.studentid,
         name: student.name,
+        course: student.courses?.name || null,
         profileUrl,
         type: 'student-profile'
       }), {
@@ -110,13 +68,13 @@ export default function StudentProfile() {
   if (loading) {
     return (
       <Layout title="Student Profile">
-      <div className={styles.container}>
-        <a href="/" className={styles.homeLogo} aria-label="Go to home page">
-          <img src="/logo.png" alt="" />
-        </a>
-        <div className={styles.loading}>
-          <h1>Loading Student Profile</h1>
-          <p>Please wait while we check the student record.</p>
+        <div className={styles.container}>
+          <a href="/" className={styles.homeLogo} aria-label="Go to home page">
+            <img src="/logo.png" alt="" />
+          </a>
+          <div className={styles.loading}>
+            <h1>Loading Student Profile</h1>
+            <p>Please wait while we check the student record.</p>
           </div>
         </div>
       </Layout>
@@ -126,13 +84,13 @@ export default function StudentProfile() {
   if (!student) {
     return (
       <Layout title="Student Profile">
-      <div className={styles.container}>
-        <a href="/" className={styles.homeLogo} aria-label="Go to home page">
-          <img src="/logo.png" alt="" />
-        </a>
-        <div className={styles.error}>
-          <h1>Student Not Found</h1>
-          <p>The student profile you're looking for doesn't exist.</p>
+        <div className={styles.container}>
+          <a href="/" className={styles.homeLogo} aria-label="Go to home page">
+            <img src="/logo.png" alt="" />
+          </a>
+          <div className={styles.error}>
+            <h1>Student Not Found</h1>
+            <p>The student profile you're looking for doesn't exist.</p>
           </div>
         </div>
       </Layout>
@@ -163,26 +121,24 @@ export default function StudentProfile() {
 
           <section className={styles.coursesSection}>
             <h2>Learning Record</h2>
-            {courses.length === 0 ? (
-              <p className={styles.noCourses}>No courses enrolled.</p>
-            ) : (
+            {student.courses ? (
               <div className={styles.coursesList}>
-                {courses.map((course, index) => (
-                  <div key={index} className={styles.courseCard}>
-                    <div className={styles.courseInfo}>
-                      <h3>{course.name}</h3>
-                      {course.description && <p>{course.description}</p>}
-                      {course.duration && <p>Duration: {course.duration}</p>}
-                      <p className={course.completed ? styles.completed : styles.inProgress}>
-                        {course.completed ? 'Completed' : 'In Progress'}
-                      </p>
-                      {course.completionDate && (
-                        <p>Completed: {new Date(course.completionDate).toLocaleDateString()}</p>
-                      )}
-                    </div>
+                <div className={styles.courseCard}>
+                  <div className={styles.courseInfo}>
+                    <h3>{student.courses.name}</h3>
+                    {student.courses.description && <p>{student.courses.description}</p>}
+                    {student.courses.duration && <p>Duration: {student.courses.duration}</p>}
+                    <p className={student.completed ? styles.completed : styles.inProgress}>
+                      {student.completed ? 'Completed' : 'In Progress'}
+                    </p>
+                    {student.completion_date && (
+                      <p>Completed: {new Date(student.completion_date).toLocaleDateString()}</p>
+                    )}
                   </div>
-                ))}
+                </div>
               </div>
+            ) : (
+              <p className={styles.noCourses}>No course selected.</p>
             )}
           </section>
         </div>

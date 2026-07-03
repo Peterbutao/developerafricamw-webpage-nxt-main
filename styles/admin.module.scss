@@ -73,6 +73,10 @@
     align-items: start;
 }
 
+.tabContentSingle {
+    display: block;
+}
+
 .formCard,
 .listCard {
     background: var(--wt);
@@ -137,7 +141,9 @@
 
 .submitBtn,
 .qrBtn,
+.barcodeBtn,
 .deleteBtn,
+.saveBtn,
 .closeBtn {
     border: none;
     border-radius: 5px;
@@ -222,7 +228,9 @@
 }
 
 .qrBtn,
-.deleteBtn {
+.barcodeBtn,
+.deleteBtn,
+.saveBtn {
     padding: 10px 14px;
     @include fnt(var(--wt), 0.7rem, 500);
     text-transform: uppercase;
@@ -244,6 +252,14 @@
     }
 }
 
+.saveBtn {
+    background: var(--gn);
+
+    &:hover {
+        background: #217821;
+    }
+}
+
 .deleteBtn {
     background: transparent;
     border: #b42318 1px solid;
@@ -253,6 +269,32 @@
         background: #b42318;
         color: var(--wt);
     }
+}
+
+.progressControls {
+    display: grid;
+    grid-template-columns: minmax(160px, 1fr) 145px auto auto;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.85rem;
+
+    select,
+    input[type="date"] {
+        width: 100%;
+        padding: 0.62rem;
+        border: 1px solid rgba(0,0,0,0.14);
+        border-radius: 4px;
+        background: #fefefe;
+        @include fnt(var(--tc), 0.78rem, 400);
+    }
+}
+
+.checkboxLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+    @include fnt(var(--tc), 0.75rem, 600);
 }
 
 .modal {
@@ -376,6 +418,15 @@
 
     .tabContent {
         grid-template-columns: 1fr;
+    }
+
+    .tabContentSingle {
+        display: block;
+    }
+
+    .progressControls {
+        grid-template-columns: 1fr;
+        align-items: stretch;
     }
 }
 
