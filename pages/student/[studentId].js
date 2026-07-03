@@ -110,10 +110,13 @@ export default function StudentProfile() {
   if (loading) {
     return (
       <Layout title="Student Profile">
-        <div className={styles.container}>
-          <div className={styles.loading}>
-            <h1>Loading Student Profile</h1>
-            <p>Please wait while we check the student record.</p>
+      <div className={styles.container}>
+        <a href="/" className={styles.homeLogo} aria-label="Go to home page">
+          <img src="/logo.png" alt="" />
+        </a>
+        <div className={styles.loading}>
+          <h1>Loading Student Profile</h1>
+          <p>Please wait while we check the student record.</p>
           </div>
         </div>
       </Layout>
@@ -123,10 +126,13 @@ export default function StudentProfile() {
   if (!student) {
     return (
       <Layout title="Student Profile">
-        <div className={styles.container}>
-          <div className={styles.error}>
-            <h1>Student Not Found</h1>
-            <p>The student profile you're looking for doesn't exist.</p>
+      <div className={styles.container}>
+        <a href="/" className={styles.homeLogo} aria-label="Go to home page">
+          <img src="/logo.png" alt="" />
+        </a>
+        <div className={styles.error}>
+          <h1>Student Not Found</h1>
+          <p>The student profile you're looking for doesn't exist.</p>
           </div>
         </div>
       </Layout>
@@ -136,6 +142,9 @@ export default function StudentProfile() {
   return (
     <Layout title="Student Profile">
       <div className={styles.container}>
+        <a href="/" className={styles.homeLogo} aria-label="Go to home page">
+          <img src="/logo.png" alt="" />
+        </a>
         <div className={styles.profileCard}>
           <header className={styles.profileHeader}>
             <div className={styles.headerInfo}>
