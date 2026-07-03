@@ -581,6 +581,30 @@
     }
 }
 
+.clearDbButton {
+    padding: 10px 20px;
+    background: transparent;
+    border: #b42318 1px solid;
+    color: #b42318;
+    border-radius: 5px;
+    cursor: pointer;
+    @include fnt(var(--wt), 0.75rem, 500);
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+
+    &:hover {
+        background: #b42318;
+        color: var(--wt);
+    }
+}
+
+.headerActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
 // Registration Form Styles
 .registerContainer {
     display: flex;

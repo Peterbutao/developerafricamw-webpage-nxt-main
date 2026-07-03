@@ -125,6 +125,48 @@ export default function Admin() {
     router.push('/login')
   }
 
+  const countRows = async (table) => {
+    const { count, error } = await supabase
+      .from(table)
+      .select('id', { count: 'exact', head: true })
+
+    if (error) throw error
+    return count || 0
+  }
+
+  const deleteAllRows = async (table) => {
+    const { error } = await supabase
+      .from(table)
+      .delete()
+      .not('id', 'is', null)
+
+    if (error) throw error
+
+    const remaining = await countRows(table)
+    if (remaining > 0) {
+      throw new Error(
+        `${remaining} ${table} row${remaining === 1 ? '' : 's'} could not be deleted. Check the Supabase delete policy for admin users.`
+      )
+    }
+  }
+
+  const clearDatabase = async () => {
+    if (!confirm('⚠️ WARNING: This will permanently delete ALL students and applications. Are you sure you want to continue?')) return
+
+    try {
+      await deleteAllRows('applications')
+      await deleteAllRows('students')
+
+      // Refresh data
+      setStudents([])
+      setApplications([])
+      setProgressForms({})
+      alert('Database cleared successfully! All students and applications have been deleted.')
+    } catch (err) {
+      alert('Error clearing database: ' + err.message)
+    }
+  }
+
   const generateStudentId = () => {
     const now = new Date()
     const year = now.getFullYear().toString().slice(-2)
@@ -494,9 +536,14 @@ export default function Admin() {
               <h1>Admin Dashboard</h1>
               <p>Manage students, courses, and completion records in one place.</p>
             </div>
-            <button onClick={handleLogout} className={styles.logoutButton}>
-              Logout
-            </button>
+            <div className={styles.headerActions}>
+              <button onClick={clearDatabase} className={styles.clearDbButton}>
+                Clear Database
+              </button>
+              <button onClick={handleLogout} className={styles.logoutButton}>
+                Logout
+              </button>
+            </div>
           </div>
         </header>
 
