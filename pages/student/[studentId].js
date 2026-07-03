@@ -4,8 +4,9 @@ import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',  // Changed from 'edge'
 };
+
 
 
 export default function StudentProfile({ studentId }) {
