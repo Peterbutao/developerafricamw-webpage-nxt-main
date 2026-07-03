@@ -9,6 +9,13 @@ const emptyCourse = { name: '', description: '', duration: '' }
 const emptyEnrollment = { studentId: '', courseId: '', completionDate: '', completed: false }
 const tabs = ['students', 'courses', 'enrollments', 'applications']
 
+const normalizeEnrollment = (enrollment) => ({
+  ...enrollment,
+  studentId: enrollment.studentId ?? enrollment.student_id,
+  courseId: enrollment.courseId ?? enrollment.course_id,
+  completionDate: enrollment.completionDate ?? enrollment.completion_date
+})
+
 function Field({ field, value, onChange, children }) {
   const { name, label, type = 'text', required, placeholder, rows } = field
 
@@ -187,7 +194,7 @@ export default function Admin() {
         .order('created_at', { ascending: false })
 
       if (enrollmentsError) throw enrollmentsError
-      setEnrollments(enrollmentsData || [])
+      setEnrollments((enrollmentsData || []).map(normalizeEnrollment))
     } catch (err) {
       console.error('Error fetching data:', err)
       alert('Error loading data: ' + err.message)
@@ -277,7 +284,7 @@ export default function Admin() {
         .insert([{
           studentId: enrollmentForm.studentId,
           courseId: enrollmentForm.courseId,
-          completionDate: enrollmentForm.completionDate || null,
+          completion_date: enrollmentForm.completionDate || null,
           completed: enrollmentForm.completed || false
         }])
         .select()
@@ -285,7 +292,7 @@ export default function Admin() {
 
       if (error) throw error
       
-      setEnrollments((items) => [data, ...items])
+      setEnrollments((items) => [normalizeEnrollment(data), ...items])
       setEnrollmentForm(emptyEnrollment)
       alert('Student enrolled successfully!')
     } catch (err) {

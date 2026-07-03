@@ -4,12 +4,20 @@ import { supabase } from '../../lib/supabase'
 import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
 
+const normalizeEnrollment = (enrollment) => ({
+  ...enrollment,
+  studentId: enrollment.studentId ?? enrollment.student_id,
+  courseId: enrollment.courseId ?? enrollment.course_id,
+  completionDate: enrollment.completionDate ?? enrollment.completion_date
+})
+
 export default function StudentProfile() {
   const router = useRouter()
   const { studentId } = router.query
   
   const [student, setStudent] = useState(null)
   const [courses, setCourses] = useState([])
+  const [qrCodeUrl, setQrCodeUrl] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -42,10 +50,11 @@ export default function StudentProfile() {
           .eq('studentId', studentData.id)
 
         if (enrollmentsError) throw enrollmentsError
+        const normalizedEnrollments = (enrollmentsData || []).map(normalizeEnrollment)
 
         // Fetch course details for each enrollment
-        if (enrollmentsData && enrollmentsData.length > 0) {
-          const courseIds = enrollmentsData.map(e => e.courseId)
+        if (normalizedEnrollments.length > 0) {
+          const courseIds = normalizedEnrollments.map(e => e.courseId)
           const { data: coursesData, error: coursesError } = await supabase
             .from('courses')
             .select('*')
@@ -54,7 +63,7 @@ export default function StudentProfile() {
           if (coursesError) throw coursesError
 
           // Merge enrollment data with course data
-          const enrolledCourses = enrollmentsData.map(enrollment => {
+          const enrolledCourses = normalizedEnrollments.map(enrollment => {
             const course = coursesData.find(c => c.id === enrollment.courseId)
             return course ? { ...course, completed: enrollment.completed, completionDate: enrollment.completionDate } : null
           }).filter(Boolean)
@@ -70,6 +79,33 @@ export default function StudentProfile() {
 
     fetchStudentData()
   }, [studentId])
+
+  useEffect(() => {
+    if (!student) return
+
+    const generateStudentQr = async () => {
+      const QRCode = (await import('qrcode')).default
+      const profileUrl = `${window.location.origin}/student/${student.studentid}`
+      const qrDataUrl = await QRCode.toDataURL(JSON.stringify({
+        studentId: student.studentid,
+        name: student.name,
+        profileUrl,
+        type: 'student-profile'
+      }), {
+        width: 260,
+        margin: 2,
+        color: {
+          dark: '#113411',
+          light: '#ffffff'
+        },
+        errorCorrectionLevel: 'H'
+      })
+
+      setQrCodeUrl(qrDataUrl)
+    }
+
+    generateStudentQr()
+  }, [student])
 
   if (loading) {
     return (
@@ -102,11 +138,7 @@ export default function StudentProfile() {
       <div className={styles.container}>
         <div className={styles.profileCard}>
           <header className={styles.profileHeader}>
-            <div className={styles.avatar}>
-              {student.name.split(' ').map(n => n[0]).join('').toUpperCase()}
-            </div>
             <div className={styles.headerInfo}>
-              <p className={styles.eyebrow}>Development Africa MW Learner Profile</p>
               <h1>{student.name}</h1>
               <p className={styles.studentId}>Student ID: {student.studentid}</p>
               <div className={styles.contactInfo}>
@@ -114,12 +146,16 @@ export default function StudentProfile() {
                 {student.phone && <p>Phone: {student.phone}</p>}
               </div>
             </div>
+            <div className={styles.qrPanel}>
+              {qrCodeUrl && <img src={qrCodeUrl} alt={`${student.name} student QR code`} />}
+              <p>Student QR</p>
+            </div>
           </header>
 
           <section className={styles.coursesSection}>
             <h2>Learning Record</h2>
             {courses.length === 0 ? (
-              <p className={styles.noCourses}>No courses have been added to this learner profile yet.</p>
+              <p className={styles.noCourses}>No courses enrolled.</p>
             ) : (
               <div className={styles.coursesList}>
                 {courses.map((course, index) => (
@@ -139,14 +175,6 @@ export default function StudentProfile() {
                 ))}
               </div>
             )}
-          </section>
-
-          <section className={styles.noteSection}>
-            <h2>Record Summary</h2>
-            <p>
-              This page shows the learner details and course progress currently
-              registered with Development Africa MW.
-            </p>
           </section>
         </div>
       </div>
