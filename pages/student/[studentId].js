@@ -3,6 +3,11 @@ import { supabase } from '../../lib/supabase'
 import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
 
+export const config = {
+  runtime: 'edge',
+};
+
+
 export default function StudentProfile({ studentId }) {
   const [student, setStudent] = useState(null)
   const [courses, setCourses] = useState([])
