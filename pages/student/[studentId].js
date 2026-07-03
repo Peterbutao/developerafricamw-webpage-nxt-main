@@ -1,20 +1,24 @@
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { supabase } from '../../lib/supabase'
 import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
 
 export const config = {
-  runtime: 'experimental-edge',  // Changed from 'edge'
-};
+  runtime: 'experimental-edge',
+}
 
-
-
-export default function StudentProfile({ studentId }) {
+export default function StudentProfile() {
+  const router = useRouter()
+  const { studentId } = router.query
+  
   const [student, setStudent] = useState(null)
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!studentId) return
+    
     const fetchStudentData = async () => {
       setLoading(true)
       setCourses([])
@@ -152,13 +156,4 @@ export default function StudentProfile({ studentId }) {
       </div>
     </Layout>
   )
-}
-
-export async function getServerSideProps(context) {
-  const { studentId } = context.params
-  return {
-    props: {
-      studentId
-    }
-  }
 }
