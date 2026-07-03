@@ -4,10 +4,6 @@ import { supabase } from '../../lib/supabase'
 import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
 
-export const config = {
-  runtime: 'experimental-edge',
-}
-
 export default function StudentProfile() {
   const router = useRouter()
   const { studentId } = router.query
