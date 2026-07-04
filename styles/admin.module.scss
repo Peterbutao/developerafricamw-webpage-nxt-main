@@ -11,6 +11,12 @@
     margin: 0 auto;
     padding: 4rem 1rem 8rem;
     min-height: 100vh;
+    position: relative;
+    z-index: 110;
+
+    @media (max-width: 700px) {
+        padding-bottom: 7rem;
+    }
 }
 
 .adminHeader {
@@ -204,6 +210,8 @@
     background: #fbfdfb;
     border: 1px solid rgba(17, 67, 17, 0.1);
     border-radius: 8px;
+    position: relative;
+    z-index: 1;
 
     &:last-child {
         margin-bottom: 0;
@@ -299,6 +307,8 @@
     flex-direction: column;
     gap: 0.5rem;
     width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .secondaryActions {
@@ -369,22 +379,36 @@
 }
 
 .progressControls {
-    display: grid;
-    grid-template-columns: minmax(180px, 1fr) 150px auto auto;
-    gap: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
     align-items: center;
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid rgba(17, 67, 17, 0.1);
+    position: relative;
+    z-index: 1;
 
     select,
     input[type="date"] {
-        width: 100%;
+        flex: 1 1 180px;
+        min-width: 0;
         padding: 0.62rem;
         border: 1px solid rgba(0,0,0,0.14);
         border-radius: 4px;
         background: #fefefe;
         @include fnt(var(--tc), 0.78rem, 400);
+    }
+
+    .checkboxLabel {
+        flex: 0 0 auto;
+        min-width: 110px;
+        padding: 0.6rem 0.4rem;
+    }
+
+    .saveBtn {
+        flex: 0 0 auto;
+        min-width: 110px;
     }
 }
 
@@ -566,8 +590,16 @@
     }
 
     .progressControls {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         align-items: stretch;
+
+        select,
+        input[type="date"],
+        .checkboxLabel,
+        .saveBtn {
+            width: 100%;
+            flex: 1 1 auto;
+        }
     }
 
     .listItem {
