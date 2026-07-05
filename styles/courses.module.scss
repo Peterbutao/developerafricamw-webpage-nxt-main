@@ -15,7 +15,7 @@
 
 .eyebrow,
 .sectionHeader p {
-    @include fnt(var(--gn), 0.72rem, 700);
+    @include fnt(var(--gn), var(--fs-xs), 700);
     letter-spacing: 1.4px;
     text-transform: uppercase;
 }
@@ -33,14 +33,14 @@
     margin-top: 1rem;
 
     h1 {
-        @include fnt(var(--tc), 2rem, 500);
+        @include fnt(var(--tc), var(--fs-3xl), 500);
         line-height: 1.25;
         letter-spacing: 0;
         max-width: 540px;
     }
 
     p {
-        @include fnt(var(--tc), 0.95rem, 400);
+        @include fnt(var(--tc), var(--fs-base), 400);
         line-height: 1.85;
         margin-bottom: 1rem;
         opacity: 0.88;
@@ -55,7 +55,7 @@
     margin-bottom: 1.5rem;
 
     h2 {
-        @include fnt(var(--tc), 1.15rem, 600);
+        @include fnt(var(--tc), var(--fs-lg), 600);
         line-height: 1.55;
         letter-spacing: 0;
     }
@@ -91,14 +91,14 @@
     flex: 1;
 
     h3 {
-        @include fnt(var(--tc), 1.1rem, 600);
+        @include fnt(var(--tc), var(--fs-lg), 600);
         margin-bottom: 0.5rem;
         line-height: 1.4;
     }
 
     .duration {
         display: inline-block;
-        @include fnt(var(--gn), 0.75rem, 600);
+        @include fnt(var(--gn), var(--fs-xs), 600);
         letter-spacing: 0.8px;
         text-transform: uppercase;
         padding: 0.25rem 0.5rem;
@@ -108,7 +108,7 @@
     }
 
     p {
-        @include fnt(var(--tc), 0.88rem, 450);
+        @include fnt(var(--tc), var(--fs-sm), 450);
         line-height: 1.75;
         opacity: 0.88;
     }
@@ -120,7 +120,7 @@
     padding: 12px 20px;
     background: var(--gn);
     border-radius: 4px;
-    @include fnt(var(--wt), 0.78rem, 600);
+    @include fnt(var(--wt), var(--fs-sm), 600);
     letter-spacing: 1px;
     text-transform: uppercase;
     text-align: center;
@@ -136,7 +136,7 @@
     padding: 3rem 1rem;
 
     p {
-        @include fnt(var(--tc), 0.95rem, 400);
+        @include fnt(var(--tc), var(--fs-base), 400);
         line-height: 1.8;
         margin-bottom: 1.5rem;
         opacity: 0.85;
@@ -147,7 +147,7 @@
         padding: 12px 24px;
         background: var(--gn);
         border-radius: 4px;
-        @include fnt(var(--wt), 0.8rem, 500);
+        @include fnt(var(--wt), var(--fs-sm), 500);
         letter-spacing: 1px;
         text-transform: uppercase;
 
@@ -177,7 +177,7 @@
     border-top: 2px solid var(--gn);
 
     h2 {
-        @include fnt(var(--tc), 1rem, 600);
+        @include fnt(var(--tc), var(--fs-md), 600);
         line-height: 1.5;
     }
 
@@ -187,7 +187,7 @@
         padding: 14px 24px;
         background: var(--gn);
         border-radius: 4px;
-        @include fnt(var(--wt), 0.78rem, 600);
+        @include fnt(var(--wt), var(--fs-sm), 600);
         letter-spacing: 1.1px;
         text-transform: uppercase;
 
@@ -209,7 +209,7 @@
     }
 
     .introGrid h1 {
-        font-size: 1.45rem;
+        font-size: var(--fs-2xl);
     }
 
     .coursesGrid {

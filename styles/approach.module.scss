@@ -14,7 +14,7 @@
 
 .eyebrow,
 .sectionHeader p {
-    @include fnt(var(--gn), 0.72rem, 700);
+    @include fnt(var(--gn), var(--fs-xs), 700);
     letter-spacing: 1.4px;
     text-transform: uppercase;
 }
@@ -32,14 +32,14 @@
     margin-top: 1rem;
 
     h1 {
-        @include fnt(var(--tc), 2rem, 500);
+        @include fnt(var(--tc), var(--fs-3xl), 500);
         line-height: 1.25;
         letter-spacing: 0;
         max-width: 540px;
     }
 
     p {
-        @include fnt(var(--tc), 0.95rem, 400);
+        @include fnt(var(--tc), var(--fs-base), 400);
         line-height: 1.85;
         margin-bottom: 1rem;
         opacity: 0.88;
@@ -57,19 +57,19 @@
     box-shadow: rgba(0, 0, 0, 0.08) 0 4px 12px;
 
     span {
-        @include fnt(var(--gn), 0.75rem, 700);
+        @include fnt(var(--gn), var(--fs-xs), 700);
         letter-spacing: 1.2px;
     }
 
     h2 {
-        @include fnt(var(--tc), 1rem, 700);
+        @include fnt(var(--tc), var(--fs-md), 700);
         margin-top: 0.5rem;
         text-transform: uppercase;
         letter-spacing: 1.1px;
     }
 
     p {
-        @include fnt(var(--tc), 1rem, 400);
+        @include fnt(var(--tc), var(--fs-md), 400);
         line-height: 1.9;
         opacity: 0.9;
     }
@@ -87,7 +87,7 @@
     margin-bottom: 1.5rem;
 
     h2 {
-        @include fnt(var(--tc), 1.15rem, 600);
+        @include fnt(var(--tc), var(--fs-lg), 600);
         line-height: 1.55;
         letter-spacing: 0;
     }
@@ -107,19 +107,19 @@
     border-radius: 8px;
 
     span {
-        @include fnt(var(--gn), 0.72rem, 700);
+        @include fnt(var(--gn), var(--fs-xs), 700);
         letter-spacing: 1.1px;
     }
 
     h3 {
-        @include fnt(var(--tc), 0.95rem, 700);
+        @include fnt(var(--tc), var(--fs-base), 700);
         margin: 1.25rem 0 0.75rem;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
 
     p {
-        @include fnt(var(--tc), 0.82rem, 450);
+        @include fnt(var(--tc), var(--fs-sm), 450);
         line-height: 1.75;
         opacity: 0.86;
     }
@@ -143,13 +143,13 @@
     }
 
     h3 {
-        @include fnt(var(--gn), 0.9rem, 700);
+        @include fnt(var(--gn), var(--fs-base), 700);
         letter-spacing: 1px;
         text-transform: uppercase;
     }
 
     p {
-        @include fnt(var(--tc), 0.86rem, 450);
+        @include fnt(var(--tc), var(--fs-sm), 450);
         line-height: 1.75;
         opacity: 0.88;
     }
@@ -165,7 +165,7 @@
     border-top: 2px solid var(--gn);
 
     h2 {
-        @include fnt(var(--tc), 1rem, 600);
+        @include fnt(var(--tc), var(--fs-md), 600);
         line-height: 1.5;
     }
 
@@ -175,7 +175,7 @@
         padding: 14px 24px;
         background: var(--gn);
         border-radius: 4px;
-        @include fnt(var(--wt), 0.78rem, 600);
+        @include fnt(var(--wt), var(--fs-sm), 600);
         letter-spacing: 1.1px;
         text-transform: uppercase;
 
@@ -199,7 +199,7 @@
     }
 
     .introGrid h1 {
-        font-size: 1.45rem;
+        font-size: var(--fs-2xl);
     }
 
     .phaseGrid {

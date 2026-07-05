@@ -14,7 +14,7 @@
         margin: 0 auto;
         
         h2 {
-            @include fnt(var(--tc), 0.85rem, 700);
+            @include fnt(var(--tc), var(--fs-sm), 700);
             text-align: center;
             margin-bottom: 3rem;
             letter-spacing: 1.5px;
@@ -33,7 +33,6 @@
 .serviceCard {
     background: var(--wt);
     padding: 2.5rem;
-    // border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     border: 1px solid rgba(0,0,0,0.05);
     text-align: center;
@@ -52,13 +51,13 @@
     }
     
     h3 {
-        @include fnt(var(--tc), 1.5rem, 600);
+        @include fnt(var(--tc), var(--fs-2xl), 600);
         color: var(--gn);
         margin-bottom: 1rem;
     }
     
     p {
-        @include fnt(var(--tc), 1rem, 400);
+        @include fnt(var(--tc), var(--fs-md), 400);
         line-height: 1.7;
     }
 }
@@ -74,11 +73,11 @@
         padding: 2rem;
         
         h3 {
-            font-size: 1.25rem;
+            font-size: var(--fs-xl);
         }
         
         p {
-            font-size: 0.9rem;
+            font-size: var(--fs-base);
         }
     }
 }
@@ -89,7 +88,7 @@
     }
     
     .sectionContent h2 {
-        font-size: 0.75rem;
+        font-size: var(--fs-xs);
         margin-bottom: 2rem;
     }
     
@@ -106,12 +105,12 @@
         }
         
         h3 {
-            font-size: 1.1rem;
+            font-size: var(--fs-lg);
             margin-bottom: 0.75rem;
         }
         
         p {
-            font-size: 0.85rem;
+            font-size: var(--fs-sm);
             line-height: 1.6;
         }
     }

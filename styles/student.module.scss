@@ -52,13 +52,13 @@
     border-radius: 8px;
 
     h1 {
-        @include fnt(var(--tc), 1.35rem, 650);
+        @include fnt(var(--tc), var(--fs-xl), 650);
         margin-bottom: 0.6rem;
         line-height: 1.35;
     }
 
     p {
-        @include fnt(var(--tc), 0.95rem, 400);
+        @include fnt(var(--tc), var(--fs-base), 400);
         line-height: 1.7;
         opacity: 0.76;
     }
@@ -98,7 +98,7 @@
     justify-content: center;
 
     h1 {
-        @include fnt(var(--tc), 2.35rem, 700);
+        @include fnt(var(--tc), var(--fs-3xl), 700);
         margin: 0 0 0.75rem;
         line-height: 1.1;
         overflow-wrap: anywhere;
@@ -106,7 +106,7 @@
 }
 
 .studentId {
-    @include fnt(var(--gn), 0.88rem, 800);
+    @include fnt(var(--gn), var(--fs-sm), 800);
     width: fit-content;
     max-width: 100%;
     margin-bottom: 1rem;
@@ -121,7 +121,7 @@
     gap: 0.4rem;
 
     p {
-        @include fnt(var(--tc), 0.94rem, 500);
+        @include fnt(var(--tc), var(--fs-base), 500);
         margin: 0;
         line-height: 1.45;
         opacity: 0.82;
@@ -147,7 +147,7 @@
     }
 
     p {
-        @include fnt(var(--tc), 0.72rem, 800);
+        @include fnt(var(--tc), var(--fs-xs), 800);
         margin: 0;
         letter-spacing: 0;
         text-transform: uppercase;
@@ -188,7 +188,7 @@
     grid-template-rows: auto minmax(0, 1fr);
 
     h2 {
-        @include fnt(var(--tc), 1rem, 750);
+        @include fnt(var(--tc), var(--fs-md), 750);
         margin: 0 0 1rem;
         padding-bottom: 0.75rem;
         border-bottom: 1px solid rgba(17, 52, 17, 0.14);
@@ -203,7 +203,7 @@
     place-items: center;
     min-height: 120px;
     text-align: center;
-    @include fnt(var(--tc), 0.92rem, 600);
+    @include fnt(var(--tc), var(--fs-base), 600);
     background: #f7faf7;
     border: 1px dashed rgba(17, 52, 17, 0.18);
     opacity: 0.78;
@@ -226,13 +226,13 @@
 
 .courseInfo {
     h3 {
-        @include fnt(var(--tc), 0.98rem, 700);
+        @include fnt(var(--tc), var(--fs-md), 700);
         margin-bottom: 0.45rem;
         line-height: 1.35;
     }
 
     p {
-        @include fnt(var(--tc), 0.86rem, 450);
+        @include fnt(var(--tc), var(--fs-sm), 450);
         margin-bottom: 0.4rem;
         line-height: 1.6;
         opacity: 0.82;
@@ -248,12 +248,12 @@
 }
 
 .completed {
-    @include fnt(#176b35, 0.76rem, 800);
+    @include fnt(#176b35, var(--fs-xs), 800);
     background: rgba(23, 107, 53, 0.1);
 }
 
 .inProgress {
-    @include fnt(#715200, 0.76rem, 800);
+    @include fnt(#715200, var(--fs-xs), 800);
     background: rgba(255, 193, 7, 0.16);
 }
 
@@ -270,7 +270,7 @@
     color: white;
     text-decoration: none;
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: var(--fs-sm);
     font-weight: 600;
     transition: background 0.2s ease;
 
@@ -308,11 +308,11 @@
     }
 
     .headerInfo h1 {
-        font-size: 1.55rem;
+        font-size: var(--fs-2xl);
     }
 
     .studentId {
-        font-size: 0.8rem;
+        font-size: var(--fs-xs);
     }
 
     .qrPanel {

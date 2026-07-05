@@ -29,14 +29,14 @@
             text-align: start;
             padding: 1rem 0;
             h1{
-                @include fnt(var(--tc),  1rem, 600);
+                @include fnt(var(--tc),  var(--fs-md), 600);
                 letter-spacing: 1.09px;
                 padding: 0.5rem 0;
                 text-transform: uppercase;
                 margin-bottom: 0.5rem;
             }
             p{
-                @include fnt(var(--tc),  0.85rem, 500);
+                @include fnt(var(--tc),  var(--fs-sm), 500);
                 line-height: 1.6;
             }
         }
@@ -51,7 +51,7 @@
                 border: var(--gn) 1px solid;
                 border-radius: 5px;
                 padding: 8px 16px;
-                @include fnt(var(--gn),  0.8rem, 500);
+                @include fnt(var(--gn),  var(--fs-sm), 500);
                 transition: all 0.3s ease;
                 &:hover{
                     background: var(--gn);

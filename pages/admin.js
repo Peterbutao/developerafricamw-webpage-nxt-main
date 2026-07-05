@@ -528,6 +528,7 @@ export default function Admin() {
       const { data, error } = await supabase
         .from('applications')
         .select('*, courses(name)')
+        .eq('status', 'pending')
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -566,12 +567,12 @@ export default function Admin() {
 
       if (error) throw error
 
-      const { error: updateError } = await supabase
+      const { error: deleteError } = await supabase
         .from('applications')
-        .update({ status: 'converted', updated_at: new Date().toISOString() })
+        .delete()
         .eq('id', application.id)
 
-      if (updateError) throw updateError
+      if (deleteError) throw deleteError
 
       setStudents((items) => [data, ...items])
       setProgressForms((forms) => ({
@@ -591,7 +592,7 @@ export default function Admin() {
     try {
       const { error } = await supabase
         .from('applications')
-        .update({ status: 'rejected', updated_at: new Date().toISOString() })
+        .delete()
         .eq('id', applicationId)
 
       if (error) throw error

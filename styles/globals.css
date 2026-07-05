@@ -47,6 +47,16 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+  
+  /* Standardized Font Sizes */
+  --fs-xs: 0.75rem;    /* Small labels, meta text */
+  --fs-sm: 0.85rem;    /* Buttons, small text, navigation */
+  --fs-base: 0.95rem;  /* Body text, paragraphs */
+  --fs-md: 1.05rem;    /* Subheadings, card titles */
+  --fs-lg: 1.2rem;     /* Section headings */
+  --fs-xl: 1.35rem;    /* Page headings */
+  --fs-2xl: 1.6rem;    /* Major headings */
+  --fs-3xl: 2rem;      /* Hero headings */
 }
 
 
@@ -60,6 +70,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-size: 16px;
 }
 
 body {
@@ -76,5 +87,3 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
-

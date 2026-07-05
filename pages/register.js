@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { supabase } from '../lib/supabase'
 import styles from '../styles/admin.module.scss'
 
 export default function Register() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -64,9 +66,10 @@ export default function Register() {
 
       setSuccess(true)
       setFormData({ name: '', email: '', phone: '', course: '' })
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setSuccess(false), 5000)
+
+      setTimeout(() => {
+        router.push('/')
+      }, 1200)
     } catch (err) {
       setError(err.message || 'Failed to submit application. Please try again.')
     } finally {

@@ -52,7 +52,7 @@
             padding: 10px 0;
             h1{
                 text-align: center;
-                @include fnt(#217821, 0.75rem, 500);
+                @include fnt(#217821, var(--fs-xs), 500);
                 display: flex;
                 flex-direction: column;
                 padding: 10px;
@@ -64,12 +64,12 @@
             p{
                 background: #f1f1f16e;
                 padding: 15px;
-                @include fnt(var(--tc), 0.75rem, 470);
+                @include fnt(var(--tc), var(--fs-xs), 470);
                 line-height: 2;
                 
                 @media (max-width: 600px) {
                     padding: 10px;
-                    font-size: 0.7rem;
+                    font-size: var(--fs-xs);
                     line-height: 1.6;
                 }
             }
@@ -83,7 +83,7 @@
             a{
                 display: block;
                 border: var(--gn) 1px solid;
-                @include fnt(var(--tc), 0.7rem, 500);
+                @include fnt(var(--tc), var(--fs-xs), 500);
                 border-radius: 5px;
                 padding: 15px;
             }

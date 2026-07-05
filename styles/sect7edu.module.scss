@@ -24,20 +24,20 @@
         header{
             text-align: center;
             h1{
-                @include fnt(var(--wt), 0.75rem, 500);
+                @include fnt(var(--wt), var(--fs-xs), 500);
                 padding: 20px 0;
                 
                 @media (max-width: 600px) {
-                    font-size: 0.65rem;
+                    font-size: var(--fs-xs);
                     padding: 10px 0;
                 }
             }
             p{
-                @include fnt(var(--wt), 0.7rem, 500);
+                @include fnt(var(--wt), var(--fs-xs), 500);
                 line-height:3;
                 
                 @media (max-width: 600px) {
-                    font-size: 0.65rem;
+                    font-size: var(--fs-xs);
                     line-height: 2;
                 }
                 span{
@@ -72,10 +72,10 @@
                 text-align: center;
                 border-top: gold solid 1px;
                 padding-top: 10px;
-                @include fnt(var(--wt), 0.7rem, 500);
+                @include fnt(var(--wt), var(--fs-xs), 500);
                 
                 @media (max-width: 600px) {
-                    font-size: 0.65rem;
+                    font-size: var(--fs-xs);
                     padding-top: 5px;
                 }
             }
@@ -90,13 +90,13 @@
         footer{
             a{
                 text-align: center;
-                @include fnt(var(--tc), 0.7rem, 500);
+                @include fnt(var(--tc), var(--fs-xs), 500);
                 padding: 15px;
                 display: block;
                 margin: 20px 0;
                 
                 @media (max-width: 600px) {
-                    font-size: 0.65rem;
+                    font-size: var(--fs-xs);
                     padding: 10px;
                     margin: 10px 0;
                 }

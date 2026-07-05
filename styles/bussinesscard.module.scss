@@ -23,7 +23,7 @@
     flex-direction: column;
 
     header h1 {
-        @include fnt(var(--tc), 0.8rem, 600);
+        @include fnt(var(--tc), var(--fs-sm), 600);
         letter-spacing: 1.2px;
         padding: 8px 14px;
         margin: 0;
@@ -46,7 +46,7 @@
     }
 
     h2 a {
-        @include fnt(var(--tc), 0.75rem, 500);
+        @include fnt(var(--tc), var(--fs-xs), 500);
         overflow-wrap: anywhere;
         line-height: 1.4;
     }

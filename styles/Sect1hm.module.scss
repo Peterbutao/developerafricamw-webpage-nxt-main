@@ -32,7 +32,7 @@
                 padding-left: 25px;
                 display: flex;
                 text-align: start;
-                @include fnt(var(--tc), 1.1rem, 450);
+                @include fnt(var(--tc), var(--fs-lg), 450);
                 flex-direction: column;
                 line-height: 1.6;
                 margin-bottom: 1.5rem;
@@ -43,7 +43,7 @@
             }
             p{
                 padding-left: 25px;
-                @include fnt(var(--tc), 0.95rem, 400);
+                @include fnt(var(--tc), var(--fs-base), 400);
                 line-height: 1.8;
                 margin: 0;
                 letter-spacing: 0.3px;
@@ -58,7 +58,7 @@
                 background-color: #114311;
                 padding: 15px 30px;
                 border-radius: 4px;
-                @include fnt(white, 0.85rem, 450);
+                @include fnt(white, var(--fs-sm), 450);
                 letter-spacing: 1.1px;
                 transition: background-color 0.3s ease;
             }
@@ -79,7 +79,7 @@
                 h1{
                     padding-left: 0;
                     padding-top: 20px;
-                    @include fnt(var(--tc), 0.9rem, 450);
+                    @include fnt(var(--tc), var(--fs-md), 450);
                     margin-bottom: 1rem;
                     span{
                         margin-bottom: 0.3rem;
@@ -87,7 +87,7 @@
                 }
                 p{
                     padding-left: 0;
-                    @include fnt(var(--tc), 0.85rem, 400);
+                    @include fnt(var(--tc), var(--fs-sm), 400);
                 }
             }
             .link{

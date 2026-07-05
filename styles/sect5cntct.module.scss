@@ -26,11 +26,11 @@
         
         header{
             h1{
-                @include fnt(var(--tc), 0.7rem, 500);
+                @include fnt(var(--tc), var(--fs-xs), 500);
                 padding: 20px;
                 
                 @media (max-width: 600px) {
-                    font-size: 0.65rem;
+                    font-size: var(--fs-xs);
                     padding: 10px;
                 }
             }
@@ -39,10 +39,10 @@
                 padding: 15px ;
                 display: block;
                 border-radius: 5px;
-                @include fnt(var(--wt), 0.75rem, 500);
+                @include fnt(var(--wt), var(--fs-xs), 500);
                 
                 @media (max-width: 600px) {
-                    font-size: 0.7rem;
+                    font-size: var(--fs-xs);
                     padding: 10px;
                 }
             }
@@ -52,11 +52,11 @@
                 border-radius: 5px;
                 padding: 15px ;
                 display: block;
-                @include fnt(var(--tc), 0.75rem, 500);
+                @include fnt(var(--tc), var(--fs-xs), 500);
                 border: var(--gn) solid 1px;
                 
                 @media (max-width: 600px) {
-                    font-size: 0.7rem;
+                    font-size: var(--fs-xs);
                     padding: 10px;
                 }
                 

@@ -13,7 +13,7 @@
         padding: 3rem 2rem;
         header{
             h1{
-                @include fnt(var(--tc), 0.85rem, 700);
+                @include fnt(var(--tc), var(--fs-sm), 700);
                 letter-spacing: 1.1px;
                 display: grid;
                 place-items:center;
@@ -29,14 +29,14 @@
                 padding: 0;
                 list-style: none;
                 h1{
-                    @include fnt(var(--tc), 0.85rem, 700);
+                    @include fnt(var(--tc), var(--fs-sm), 700);
                     padding: 10px 0;
                     margin-bottom: 0.5rem;
                 }
                 li{
                     padding: 8px 0;
                     a{
-                        @include fnt(var(--tc), 0.8rem, 500);
+                        @include fnt(var(--tc), var(--fs-sm), 500);
                         transition: all 0.3s ease;
                         &:hover{
                             color: var(--gn);
@@ -52,17 +52,17 @@
             .head{
                 h1{
                     text-align: center;
-                    @include fnt(var(--tc), 0.68rem, 500);
+                    @include fnt(var(--tc), var(--fs-xs), 500);
                     padding: 10px;
                     a{
-                        @include fnt(var(--gn), 0.71rem, 500);
+                        @include fnt(var(--gn), var(--fs-xs), 500);
                     }
                 }
             }
             .bottom{
                 text-align: center;
                 a{
-                    @include fnt(var(--wt), 0.75rem, 450);
+                    @include fnt(var(--wt), var(--fs-xs), 450);
                     display: block;
                     background: var(--gn);
                     padding: 15px;
@@ -105,7 +105,7 @@
                 }
                 
                 a {
-                    font-size: 0.75rem;
+                    font-size: var(--fs-xs);
                 }
             }
             
@@ -113,12 +113,12 @@
                 padding: 8px;
                 
                 .head h1 {
-                    font-size: 0.65rem;
+                    font-size: var(--fs-xs);
                     padding: 8px;
                 }
                 
                 .bottom a {
-                    font-size: 0.7rem;
+                    font-size: var(--fs-xs);
                     padding: 12px;
                 }
             }

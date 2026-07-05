@@ -7,7 +7,7 @@
 .viewalllink a{
   padding: 15px;
   background: var(--gn);
-  font-size: 0.75rem;
+  font-size: var(--fs-sm);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 500;
   color: white;
@@ -22,7 +22,7 @@
 .heading h1{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 470;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: black;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -42,7 +42,7 @@
   display: inherit;
   justify-content: inherit;
   align-items: inherit;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   max-width: var(--max-width);
   width: 100%;
   z-index: 2;
@@ -167,7 +167,7 @@
   }
 
   .description {
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
   }
 
   .description a {
@@ -227,7 +227,7 @@
   }
   
   .description p {
-    font-size: 1rem;
+    font-size: var(--fs-base);
   }
 }
 
