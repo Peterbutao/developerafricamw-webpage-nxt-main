@@ -15,12 +15,12 @@ export default function BusinessCard() {
               <h2><a href="tel:0880164455">0880164455</a></h2>
             </section>
             <div className={styles.qrWrapper}>
-              <Image src="/qr.png" alt="QR code" fill style={{ objectFit: 'contain' }} />
+              <Image src="/qr.png" alt="Development Africa MW contact QR code" fill style={{ objectFit: 'contain' }} />
             </div>
           </div>
           <div className={styles.logo}>
             <div className={styles.logoWrapper}>
-              <Image src="/logo1.png" alt="Development Africa MW" fill style={{ objectFit: 'contain' }} />
+              <Image src="/logo1.png" alt="Development Africa MW logo" fill style={{ objectFit: 'contain' }} />
             </div>
           </div>
         </div>

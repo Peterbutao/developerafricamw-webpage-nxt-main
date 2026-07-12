@@ -159,6 +159,10 @@ function StatusPill({ completed }) {
   )
 }
 
+export async function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function Admin() {
   const router = useRouter()
   const [students, setStudents] = useState([])
@@ -620,7 +624,7 @@ export default function Admin() {
     if (!student) return
 
     const QRCode = (await import('qrcode')).default
-    const profileUrl = `https://developmentafricamw.pages.dev/student/${student.studentid}`
+    const profileUrl = `${window.location.origin}/student/${student.studentid}`
     const qrDataUrl = await QRCode.toDataURL(JSON.stringify({
       student,
       course: student.courses || null,
@@ -655,7 +659,7 @@ export default function Admin() {
     setBarcodeStudentId(studentId)
 
     const QRCode = (await import('qrcode')).default
-    const profileUrl = `https://developmentafricamw.pages.dev/student/${student.studentid}`
+    const profileUrl = `${window.location.origin}/student/${student.studentid}`
     const qrDataUrl = await QRCode.toDataURL(JSON.stringify({
       student,
       profileUrl,
@@ -1104,7 +1108,7 @@ export default function Admin() {
                     <p><strong>Email:</strong> {barcodeStudent.email}</p>
                     <p><strong>Phone:</strong> {barcodeStudent.phone || 'N/A'}</p>
                     <p><strong>Course:</strong> {barcodeStudent.courses?.name || 'N/A'}</p>
-                    <p><strong>Profile Link:</strong> https://developmentafricamw.pages.dev/student/{barcodeStudent.studentid}</p>
+                    <p><strong>Profile Link:</strong> {window.location.origin}/student/{barcodeStudent.studentid}</p>
                   </div>
                 </div>
                 <div className={styles.modalActions}>

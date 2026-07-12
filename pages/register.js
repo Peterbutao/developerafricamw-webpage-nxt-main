@@ -3,6 +3,10 @@ import { useRouter } from 'next/router'
 import { supabase } from '../lib/supabase'
 import styles from '../styles/admin.module.scss'
 
+export async function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function Register() {
   const router = useRouter()
   const [formData, setFormData] = useState({

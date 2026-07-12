@@ -22,6 +22,10 @@ const principles = [
   ['Measurable impact', 'Clear data, practical reporting, and strong systems help organisations learn and improve.']
 ]
 
+export async function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function About() {
   return (
     <Layout title="About Development Africa MW">

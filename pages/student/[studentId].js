@@ -5,6 +5,10 @@ import Layout from "/components/Layout"
 import styles from '../../styles/student.module.scss'
 import { FaDownload } from 'react-icons/fa'
 
+export async function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function StudentProfile() {
   const router = useRouter()
   const { studentId } = router.query

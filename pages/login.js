@@ -4,6 +4,10 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import styles from '../styles/admin.module.scss'
 
+export async function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function Login() {
   const router = useRouter()
   const [email, setEmail] = useState('')

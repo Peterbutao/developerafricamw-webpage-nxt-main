@@ -44,7 +44,7 @@
     }
     
     .serviceIcon {
-        color: var(--gn);
+        color: var(--tc); /* Changed from --gn to --tc for better theme consistency */
         margin-bottom: 1.5rem;
         display: inline-block;
         font-size: 3rem;
@@ -52,7 +52,7 @@
     
     h3 {
         @include fnt(var(--tc), var(--fs-2xl), 600);
-        color: var(--gn);
+        color: var(--tc); /* Changed from --gn to --tc for better theme consistency */
         margin-bottom: 1rem;
     }
     
@@ -60,6 +60,14 @@
         @include fnt(var(--tc), var(--fs-md), 400);
         line-height: 1.7;
     }
+}
+
+/* New rule to align icon and heading on the same line */
+.serviceHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 /* Responsive Design */

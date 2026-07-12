@@ -1,16 +1,25 @@
+import { useEffect, useRef } from "react"
 import Image from "next/image"
+/* GSAP import removed */
+/* ScrollTrigger import removed */
 import styles from "../styles/Sect3card.module.scss"
 
-export default function sectionthree({name, description, link, github, image}) {
+/* GSAP plugin registration removed */
+
+export default function SectionThreeCard({name, description, link, github, image}) {
+  const cardRef = useRef(null)
+
+/* GSAP animations removed from SectionThreeCard component */
+
   return (
     <article className={styles.cards}>
-      <div className={styles.card}>
+      <div className={styles.card} ref={cardRef}>
         <header>
           <div className={styles.image}>
             <Image 
               className={styles.projectimage}
               src={image}
-              alt="project"
+              alt={`${name} project screenshot`}
               width={350}
               height={350}
             />

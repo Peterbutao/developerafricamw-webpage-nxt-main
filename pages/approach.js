@@ -17,6 +17,10 @@ const approaches = [
   ['Data-Driven', 'Clear metrics and practical reporting systems help organizations make informed decisions and demonstrate impact to stakeholders.']
 ]
 
+export async function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function Approach() {
   return (
     <Layout title="Our Approach | Development Africa MW">

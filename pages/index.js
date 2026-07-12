@@ -1,14 +1,18 @@
 import styles from '../styles/Home.module.css'
 
 import Layout from "/components/Layout"
-import SectionOneHm from "/components/sect1hm.js"
-import SectionTwoAbt from "/components/Sect2abt.js"
+import SectionOneHome from "/components/SectionOneHome.js"
+import SectionTwoAbout from "/components/SectionTwoAbout.js"
 import SectionServices from "/components/SectionServices.js"
-import SectionThreeCard from "/components/Sect3card.js"
-import SectionFourBanner from "/components/sect4banner.js"
-import SectionFiveContact from "/components/sect5cntct.js"
-import SectionSevenEdu  from "/components/sect7edu.js"
-import Footer  from "/components/footer.js"
+import SectionThreeCard from "/components/Sect3Card.js"
+import SectionFourBanner from "/components/SectionFourBanner.js"
+import SectionFiveContact from "/components/SectionFiveContact.js"
+import SectionSevenEdu  from "/components/SectionSevenEdu.js"
+import Footer  from "/components/Footer.js"
+
+export async function getServerSideProps() {
+  return { props: {} }
+}
 
 const projects = [
   ['LUANAR Timetable app', 'Built as part of our tech education program - a mobile ride-hailing and battery swapping solution developed during our youth coding bootcamp', '/pro.png',"https://luanarapp.netlify.app/app"],
@@ -26,8 +30,8 @@ export default function Home() {
       <main className={styles.main}>
 
         <div className={styles.center}>
-          <SectionOneHm />
-          <SectionTwoAbt />        
+          <SectionOneHome />
+          <SectionTwoAbout />        
         </div>
         
         <SectionServices />

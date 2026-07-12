@@ -3,6 +3,10 @@ import { supabase } from '../lib/supabase'
 import Layout from "/components/Layout"
 import styles from '../styles/courses.module.scss'
 
+export async function getServerSideProps() {
+  return { props: {} }
+}
+
 export default function Courses() {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
